@@ -36,12 +36,10 @@
   --rs: 10px;
   --tr: all .22s cubic-bezier(.4,0,.2,1);
   --fd-sky: #5bc8e8;
-  /* Mobile-safe font sizing */
   --fs-base: 15px;
   --fs-sm: 13px;
   --fs-xs: 11px;
   --fs-label: 12px;
-  /* Touch target minimum */
   --touch-min: 48px;
 }
 
@@ -57,7 +55,6 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  /* Prevent overscroll bounce background flash */
   background: #0b1829;
 }
 
@@ -70,7 +67,6 @@ body {
   overflow-x: hidden;
   font-size: var(--fs-base);
   line-height: 1.5;
-  /* Smooth scrolling on iOS */
   -webkit-overflow-scrolling: touch;
 }
 
@@ -87,7 +83,6 @@ body {
   justify-content: center;
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  /* Fix iOS backdrop-filter stacking */
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
@@ -100,13 +95,11 @@ body {
   background: var(--surface);
   border-radius: 22px 22px 0 0;
   padding: 1.75rem 1.25rem;
-  /* Safe area for home indicator */
   padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 20px));
   width: 100%;
   text-align: center;
   box-shadow: 0 -20px 60px rgba(26,95,212,.2);
   animation: slideUp .35s cubic-bezier(.34,1.56,.64,1);
-  /* Prevent content from going under home indicator */
   max-height: 90dvh;
   overflow-y: auto;
 }
@@ -198,7 +191,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Active state for mobile */
   -webkit-user-select: none;
   user-select: none;
 }
@@ -215,8 +207,6 @@ header {
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   position: sticky;
-  top: 0;
-  /* Cover area under status bar on iOS */
   top: env(safe-area-inset-top, 0px);
   z-index: 100;
   gap: .4rem;
@@ -238,7 +228,6 @@ header.visible { display: flex; }
   box-shadow: 0 2px 8px rgba(91,200,232,.3);
   cursor: pointer;
   flex-shrink: 0;
-  /* Touch area */
   min-width: var(--touch-min);
   min-height: 36px;
 }
@@ -301,7 +290,6 @@ header.visible { display: flex; }
   gap: 4px;
   white-space: nowrap;
   min-height: var(--touch-min);
-  /* Larger touch target */
   min-width: 44px;
 }
 .hbtn:active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
@@ -395,10 +383,8 @@ header.visible { display: flex; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* Improve tap responsiveness */
   -webkit-user-select: none;
   user-select: none;
-  /* Hardware acceleration */
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
 }
@@ -582,8 +568,6 @@ header.visible { display: flex; }
   color: var(--muted);
   margin-bottom: .28rem;
   display: block;
-  /* Prevent label from being tiny */
-  min-font-size: 12px;
 }
 
 /* ─── INPUT WITH PREFIX ─── */
@@ -600,8 +584,7 @@ header.visible { display: flex; }
   pointer-events: none;
   z-index: 1;
 }
-/* When hint is shown, shift prefix up */
-.pfx.has-hint::before { top: calc(50% - 10px); }
+.pfx.has-words::before { top: calc(50% - 18px); }
 
 .pfx input {
   width: 100%;
@@ -610,7 +593,6 @@ header.visible { display: flex; }
   border: 1.5px solid var(--border);
   border-radius: 10px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 1rem; /* Minimum 16px rendered prevents iOS zoom */
   color: var(--text);
   transition: var(--tr);
   outline: none;
@@ -618,8 +600,8 @@ header.visible { display: flex; }
   -webkit-appearance: none;
   appearance: none;
   min-height: var(--touch-min);
-  /* Prevent auto zoom on focus on iOS */
   font-size: max(16px, 1rem);
+  letter-spacing: .02em;
 }
 .pfx input::-webkit-inner-spin-button,
 .pfx input::-webkit-outer-spin-button { -webkit-appearance: none; }
@@ -628,28 +610,33 @@ header.visible { display: flex; }
   background: #fff;
   box-shadow: 0 0 0 3px rgba(26,95,212,.12);
 }
-.pfx.has-hint input {
+.pfx.has-words input {
   border-radius: 10px 10px 0 0;
   border-bottom-color: transparent;
 }
 
-.readable-hint {
+/* ─── AMOUNT IN WORDS HINT ─── */
+.amount-words {
   display: none;
   width: 100%;
   background: var(--blue-light);
   border: 1.5px solid var(--blue-border);
   border-top: none;
   border-radius: 0 0 10px 10px;
-  padding: .22rem .8rem .22rem 2rem;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: var(--fs-xs);
+  padding: .28rem .8rem .28rem 2rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 10.5px;
   color: var(--blue);
   font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.35;
 }
-.pfx.has-hint .readable-hint { display: block; }
+.amount-words .words-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  opacity: .8;
+}
+.pfx.has-words .amount-words { display: block; }
 
 .subtotal {
   background: var(--surface2);
@@ -751,23 +738,24 @@ header.visible { display: flex; }
   border-top: 1px solid var(--border);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
-  padding: .6rem max(1rem, env(safe-area-inset-right, 0px)) calc(.6rem + env(safe-area-inset-bottom, 20px)) max(1rem, env(safe-area-inset-left, 0px));
+  padding: .5rem .75rem calc(.5rem + env(safe-area-inset-bottom, 16px));
   z-index: 50;
-  gap: .4rem;
-  /* Fix for iOS Safari bottom nav */
+  gap: .3rem;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+  box-sizing: border-box;
+  width: 100%;
 }
 .section-nav.show { display: flex; }
 
 .nav-btn {
   display: flex;
   align-items: center;
-  gap: .3rem;
+  gap: .25rem;
   background: var(--surface2);
   border: 1px solid var(--border2);
   border-radius: 10px;
-  padding: 0 1rem;
+  padding: 0 .75rem;
   font-family: 'Syne', sans-serif;
   font-size: var(--fs-sm);
   font-weight: 600;
@@ -775,18 +763,18 @@ header.visible { display: flex; }
   transition: var(--tr);
   color: var(--muted);
   white-space: nowrap;
-  min-height: var(--touch-min);
-  min-width: 72px;
+  min-height: 44px;
+  flex-shrink: 0;
   -webkit-user-select: none;
   user-select: none;
 }
 .nav-btn:active:not(:disabled) { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
 .nav-btn:disabled { opacity: .3; cursor: not-allowed; pointer-events: none; }
 
-.nav-center { display: flex; align-items: center; gap: .45rem; }
+.nav-center { display: flex; align-items: center; gap: .3rem; flex: 1; justify-content: center; }
 .nav-step {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 1.5px solid var(--border2);
   display: flex;
@@ -799,9 +787,7 @@ header.visible { display: flex; }
   color: var(--muted);
   background: transparent;
   font-family: 'Syne', sans-serif;
-  /* Larger than visual to improve tapping */
-  min-width: var(--touch-min);
-  min-height: var(--touch-min);
+  flex-shrink: 0;
   -webkit-user-select: none;
   user-select: none;
 }
@@ -825,7 +811,6 @@ header.visible { display: flex; }
 .sum-hero {
   background: linear-gradient(135deg, #0b1829 0%, #122348 100%);
   padding: 2rem max(1.25rem, env(safe-area-inset-right, 0px)) 2.5rem max(1.25rem, env(safe-area-inset-left, 0px));
-  /* Add top padding for safe area */
   padding-top: calc(2rem + env(safe-area-inset-top, 0px));
   text-align: center;
   position: relative;
@@ -944,11 +929,9 @@ header.visible { display: flex; }
 }
 
 /* ─── SUMMARY TABLE ─── */
-/* Scroll hint gradient */
 .sc-table-wrap {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  /* Scroll hint shadow on right */
   background:
     linear-gradient(to right, white 30%, rgba(255,255,255,0)),
     linear-gradient(to left, white 30%, rgba(255,255,255,0)) 100% 0,
@@ -997,7 +980,6 @@ header.visible { display: flex; }
 .st-danger { color: var(--red); font-weight: 700; }
 .st-na { color: var(--faint); }
 
-/* Scroll hint label below table on mobile */
 .scroll-hint {
   text-align: center;
   font-size: var(--fs-xs);
@@ -1021,14 +1003,12 @@ header.visible { display: flex; }
 }
 
 /* ─── ACCESSIBILITY ─── */
-/* Focus ring for keyboard navigation */
 :focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: .01ms !important;
@@ -1190,21 +1170,21 @@ header.visible { display: flex; }
     <div class="form-grid">
       <div class="form-section">
         <div class="fs-title">💰 Monthly Income Sources</div>
-        <div class="field"><label for="i_salary">Employment Salary</label><div class="pfx"><input type="number" inputmode="numeric" id="i_salary" placeholder="e.g. 100000" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_salary" aria-live="polite"></span></div></div>
-        <div class="field"><label for="i_bonus">Bonus (avg / month)</label><div class="pfx"><input type="number" inputmode="numeric" id="i_bonus" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_bonus" aria-live="polite"></span></div></div>
-        <div class="field"><label for="i_business">Business / Agriculture</label><div class="pfx"><input type="number" inputmode="numeric" id="i_business" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_business" aria-live="polite"></span></div></div>
-        <div class="field"><label for="i_spouse">Spouse Income</label><div class="pfx"><input type="number" inputmode="numeric" id="i_spouse" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_spouse" aria-live="polite"></span></div></div>
-        <div class="field"><label for="i_rent">Rent from Property</label><div class="pfx"><input type="number" inputmode="numeric" id="i_rent" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_rent" aria-live="polite"></span></div></div>
-        <div class="field"><label for="i_dividends">Dividends / Royalties</label><div class="pfx"><input type="number" inputmode="numeric" id="i_dividends" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_dividends" aria-live="polite"></span></div></div>
-        <div class="field"><label for="i_pension">Pension / Annuity</label><div class="pfx"><input type="number" inputmode="numeric" id="i_pension" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_pension" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_salary">Employment Salary</label><div class="pfx"><input type="text" inputmode="numeric" id="i_salary" placeholder="e.g. 1,00,000" autocomplete="off"><span class="amount-words" id="words_i_salary" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_bonus">Bonus (avg / month)</label><div class="pfx"><input type="text" inputmode="numeric" id="i_bonus" placeholder="0" autocomplete="off"><span class="amount-words" id="words_i_bonus" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_business">Business / Agriculture</label><div class="pfx"><input type="text" inputmode="numeric" id="i_business" placeholder="0" autocomplete="off"><span class="amount-words" id="words_i_business" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_spouse">Spouse Income</label><div class="pfx"><input type="text" inputmode="numeric" id="i_spouse" placeholder="0" autocomplete="off"><span class="amount-words" id="words_i_spouse" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_rent">Rent from Property</label><div class="pfx"><input type="text" inputmode="numeric" id="i_rent" placeholder="0" autocomplete="off"><span class="amount-words" id="words_i_rent" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_dividends">Dividends / Royalties</label><div class="pfx"><input type="text" inputmode="numeric" id="i_dividends" placeholder="0" autocomplete="off"><span class="amount-words" id="words_i_dividends" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_pension">Pension / Annuity</label><div class="pfx"><input type="text" inputmode="numeric" id="i_pension" placeholder="0" autocomplete="off"><span class="amount-words" id="words_i_pension" aria-live="polite"></span></div></div>
         <div class="subtotal hi-blue"><span>Gross Monthly Income</span><strong id="sub-gross">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">➖ Deductions</div>
-        <div class="field"><label for="d_pf">Provident Fund (PF)</label><div class="pfx"><input type="number" inputmode="numeric" id="d_pf" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_pf" aria-live="polite"></span></div></div>
-        <div class="field"><label for="d_pension">Pension Contribution</label><div class="pfx"><input type="number" inputmode="numeric" id="d_pension" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_pension" aria-live="polite"></span></div></div>
-        <div class="field"><label for="d_80c">Sec 80C (monthly avg)</label><div class="pfx"><input type="number" inputmode="numeric" id="d_80c" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_80c" aria-live="polite"></span></div></div>
-        <div class="field"><label for="d_80d">Sec 80D Health Insurance</label><div class="pfx"><input type="number" inputmode="numeric" id="d_80d" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_80d" aria-live="polite"></span></div></div>
+        <div class="field"><label for="d_pf">Provident Fund (PF)</label><div class="pfx"><input type="text" inputmode="numeric" id="d_pf" placeholder="0" autocomplete="off"><span class="amount-words" id="words_d_pf" aria-live="polite"></span></div></div>
+        <div class="field"><label for="d_pension">Pension Contribution</label><div class="pfx"><input type="text" inputmode="numeric" id="d_pension" placeholder="0" autocomplete="off"><span class="amount-words" id="words_d_pension" aria-live="polite"></span></div></div>
+        <div class="field"><label for="d_80c">Sec 80C (monthly avg)</label><div class="pfx"><input type="text" inputmode="numeric" id="d_80c" placeholder="0" autocomplete="off"><span class="amount-words" id="words_d_80c" aria-live="polite"></span></div></div>
+        <div class="field"><label for="d_80d">Sec 80D Health Insurance</label><div class="pfx"><input type="text" inputmode="numeric" id="d_80d" placeholder="0" autocomplete="off"><span class="amount-words" id="words_d_80d" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Total Deductions</span><strong id="sub-ded">₹0</strong></div>
         <div class="subtotal hi-green" style="margin-top:.45rem"><span>✅ Net Monthly Income</span><strong id="sub-net">₹0</strong></div>
       </div>
@@ -1220,29 +1200,29 @@ header.visible { display: flex; }
     <div class="form-grid">
       <div class="form-section">
         <div class="fs-title">🛒 Living Expenses</div>
-        <div class="field"><label for="e_food">Household &amp; Food</label><div class="pfx"><input type="number" inputmode="numeric" id="e_food" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_food" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_clothing">Clothing &amp; Personal</label><div class="pfx"><input type="number" inputmode="numeric" id="e_clothing" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_clothing" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_rent">Rent / Housing</label><div class="pfx"><input type="number" inputmode="numeric" id="e_rent" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_rent" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_utilities">Utilities &amp; Maintenance</label><div class="pfx"><input type="number" inputmode="numeric" id="e_utilities" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_utilities" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_children">Children Education</label><div class="pfx"><input type="number" inputmode="numeric" id="e_children" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_children" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_health">Health &amp; Medical</label><div class="pfx"><input type="number" inputmode="numeric" id="e_health" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_health" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_transport">Transport / Fuel</label><div class="pfx"><input type="number" inputmode="numeric" id="e_transport" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_transport" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_appliances">Appliances Replacement</label><div class="pfx"><input type="number" inputmode="numeric" id="e_appliances" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_appliances" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_entertainment">Entertainment</label><div class="pfx"><input type="number" inputmode="numeric" id="e_entertainment" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_entertainment" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_travel">Travel &amp; Holidays</label><div class="pfx"><input type="number" inputmode="numeric" id="e_travel" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_travel" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_car_ins">Car Insurance &amp; Maintenance</label><div class="pfx"><input type="number" inputmode="numeric" id="e_car_ins" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_car_ins" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_health_ins">Health Insurance Premium</label><div class="pfx"><input type="number" inputmode="numeric" id="e_health_ins" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_health_ins" aria-live="polite"></span></div></div>
-        <div class="field"><label for="e_other">Other Expenses</label><div class="pfx"><input type="number" inputmode="numeric" id="e_other" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_other" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_food">Household &amp; Food</label><div class="pfx"><input type="text" inputmode="numeric" id="e_food" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_food" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_clothing">Clothing &amp; Personal</label><div class="pfx"><input type="text" inputmode="numeric" id="e_clothing" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_clothing" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_rent">Rent / Housing</label><div class="pfx"><input type="text" inputmode="numeric" id="e_rent" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_rent" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_utilities">Utilities &amp; Maintenance</label><div class="pfx"><input type="text" inputmode="numeric" id="e_utilities" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_utilities" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_children">Children Education</label><div class="pfx"><input type="text" inputmode="numeric" id="e_children" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_children" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_health">Health &amp; Medical</label><div class="pfx"><input type="text" inputmode="numeric" id="e_health" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_health" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_transport">Transport / Fuel</label><div class="pfx"><input type="text" inputmode="numeric" id="e_transport" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_transport" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_appliances">Appliances Replacement</label><div class="pfx"><input type="text" inputmode="numeric" id="e_appliances" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_appliances" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_entertainment">Entertainment</label><div class="pfx"><input type="text" inputmode="numeric" id="e_entertainment" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_entertainment" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_travel">Travel &amp; Holidays</label><div class="pfx"><input type="text" inputmode="numeric" id="e_travel" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_travel" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_car_ins">Car Insurance &amp; Maintenance</label><div class="pfx"><input type="text" inputmode="numeric" id="e_car_ins" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_car_ins" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_health_ins">Health Insurance Premium</label><div class="pfx"><input type="text" inputmode="numeric" id="e_health_ins" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_health_ins" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_other">Other Expenses</label><div class="pfx"><input type="text" inputmode="numeric" id="e_other" placeholder="0" autocomplete="off"><span class="amount-words" id="words_e_other" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Expenses Subtotal</span><strong id="sub-exp">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">🏦 EMIs (Monthly)</div>
-        <div class="field"><label for="emi_home1">Home Loan EMI 1</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_home1" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_home1" aria-live="polite"></span></div></div>
-        <div class="field"><label for="emi_home2">Home Loan EMI 2</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_home2" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_home2" aria-live="polite"></span></div></div>
-        <div class="field"><label for="emi_car">Car Loan EMI</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_car" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_car" aria-live="polite"></span></div></div>
-        <div class="field"><label for="emi_personal">Personal Loan EMI</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_personal" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_personal" aria-live="polite"></span></div></div>
-        <div class="field"><label for="emi_edu">Education Loan EMI</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_edu" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_edu" aria-live="polite"></span></div></div>
-        <div class="field"><label for="emi_other">Other EMI</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_other" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_other" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_home1">Home Loan EMI 1</label><div class="pfx"><input type="text" inputmode="numeric" id="emi_home1" placeholder="0" autocomplete="off"><span class="amount-words" id="words_emi_home1" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_home2">Home Loan EMI 2</label><div class="pfx"><input type="text" inputmode="numeric" id="emi_home2" placeholder="0" autocomplete="off"><span class="amount-words" id="words_emi_home2" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_car">Car Loan EMI</label><div class="pfx"><input type="text" inputmode="numeric" id="emi_car" placeholder="0" autocomplete="off"><span class="amount-words" id="words_emi_car" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_personal">Personal Loan EMI</label><div class="pfx"><input type="text" inputmode="numeric" id="emi_personal" placeholder="0" autocomplete="off"><span class="amount-words" id="words_emi_personal" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_edu">Education Loan EMI</label><div class="pfx"><input type="text" inputmode="numeric" id="emi_edu" placeholder="0" autocomplete="off"><span class="amount-words" id="words_emi_edu" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_other">Other EMI</label><div class="pfx"><input type="text" inputmode="numeric" id="emi_other" placeholder="0" autocomplete="off"><span class="amount-words" id="words_emi_other" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>EMIs Subtotal</span><strong id="sub-emi">₹0</strong></div>
         <div class="subtotal hi-red" style="margin-top:.45rem"><span>🔴 Total Monthly Outflow</span><strong id="sub-total-exp">₹0</strong></div>
       </div>
@@ -1263,27 +1243,27 @@ header.visible { display: flex; }
     <div class="form-grid">
       <div class="form-section">
         <div class="fs-title">💧 Liquidity</div>
-        <div class="field"><label for="a_savings_cash">Savings &amp; Cash</label><div class="pfx"><input type="number" inputmode="numeric" id="a_savings_cash" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_savings_cash" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_rd">Recurring Deposits</label><div class="pfx"><input type="number" inputmode="numeric" id="a_rd" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_rd" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_stdf">Short-Term Debt Funds</label><div class="pfx"><input type="number" inputmode="numeric" id="a_stdf" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_stdf" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_savings_cash">Savings &amp; Cash</label><div class="pfx"><input type="text" inputmode="numeric" id="a_savings_cash" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_savings_cash" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_rd">Recurring Deposits</label><div class="pfx"><input type="text" inputmode="numeric" id="a_rd" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_rd" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_stdf">Short-Term Debt Funds</label><div class="pfx"><input type="text" inputmode="numeric" id="a_stdf" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_stdf" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Liquidity Total</span><strong id="sub-liq">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">🛡️ Safety</div>
-        <div class="field"><label for="a_ppf">PPF / EPF</label><div class="pfx"><input type="number" inputmode="numeric" id="a_ppf" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_ppf" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_fd">Fixed Deposits</label><div class="pfx"><input type="number" inputmode="numeric" id="a_fd" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_fd" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_nsc">NSC / RBI Bonds</label><div class="pfx"><input type="number" inputmode="numeric" id="a_nsc" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_nsc" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_li">Life Insurance (Surrender Value)</label><div class="pfx"><input type="number" inputmode="numeric" id="a_li" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_li" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_primary_home">Primary Residence</label><div class="pfx"><input type="number" inputmode="numeric" id="a_primary_home" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_primary_home" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_ppf">PPF / EPF</label><div class="pfx"><input type="text" inputmode="numeric" id="a_ppf" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_ppf" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_fd">Fixed Deposits</label><div class="pfx"><input type="text" inputmode="numeric" id="a_fd" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_fd" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_nsc">NSC / RBI Bonds</label><div class="pfx"><input type="text" inputmode="numeric" id="a_nsc" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_nsc" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_li">Life Insurance (Surrender Value)</label><div class="pfx"><input type="text" inputmode="numeric" id="a_li" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_li" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_primary_home">Primary Residence</label><div class="pfx"><input type="text" inputmode="numeric" id="a_primary_home" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_primary_home" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Safety Total</span><strong id="sub-saf">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">📈 Growth</div>
-        <div class="field"><label for="a_gold">Gold / Jewellery</label><div class="pfx"><input type="number" inputmode="numeric" id="a_gold" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_gold" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_stocks">Stocks</label><div class="pfx"><input type="number" inputmode="numeric" id="a_stocks" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_stocks" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_mf">Equity Mutual Funds</label><div class="pfx"><input type="number" inputmode="numeric" id="a_mf" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_mf" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_realty">Real Estate (Investment)</label><div class="pfx"><input type="number" inputmode="numeric" id="a_realty" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_realty" aria-live="polite"></span></div></div>
-        <div class="field"><label for="a_other">Other Assets</label><div class="pfx"><input type="number" inputmode="numeric" id="a_other" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_other" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_gold">Gold / Jewellery</label><div class="pfx"><input type="text" inputmode="numeric" id="a_gold" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_gold" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_stocks">Stocks</label><div class="pfx"><input type="text" inputmode="numeric" id="a_stocks" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_stocks" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_mf">Equity Mutual Funds</label><div class="pfx"><input type="text" inputmode="numeric" id="a_mf" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_mf" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_realty">Real Estate (Investment)</label><div class="pfx"><input type="text" inputmode="numeric" id="a_realty" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_realty" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_other">Other Assets</label><div class="pfx"><input type="text" inputmode="numeric" id="a_other" placeholder="0" autocomplete="off"><span class="amount-words" id="words_a_other" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Growth Total</span><strong id="sub-grw">₹0</strong></div>
       </div>
       <div class="surplus-row surplus-row-4">
@@ -1304,17 +1284,17 @@ header.visible { display: flex; }
     <div class="form-grid">
       <div class="form-section">
         <div class="fs-title">⚡ Short Term</div>
-        <div class="field"><label for="l_cc">Credit Card Outstanding</label><div class="pfx"><input type="number" inputmode="numeric" id="l_cc" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_cc" aria-live="polite"></span></div></div>
-        <div class="field"><label for="l_personal">Personal Loans</label><div class="pfx"><input type="number" inputmode="numeric" id="l_personal" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_personal" aria-live="polite"></span></div></div>
-        <div class="field"><label for="l_car_st">Car Loan (&lt;3 yr remaining)</label><div class="pfx"><input type="number" inputmode="numeric" id="l_car_st" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_car_st" aria-live="polite"></span></div></div>
-        <div class="field"><label for="l_tax">Tax Dues</label><div class="pfx"><input type="number" inputmode="numeric" id="l_tax" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_tax" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_cc">Credit Card Outstanding</label><div class="pfx"><input type="text" inputmode="numeric" id="l_cc" placeholder="0" autocomplete="off"><span class="amount-words" id="words_l_cc" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_personal">Personal Loans</label><div class="pfx"><input type="text" inputmode="numeric" id="l_personal" placeholder="0" autocomplete="off"><span class="amount-words" id="words_l_personal" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_car_st">Car Loan (&lt;3 yr remaining)</label><div class="pfx"><input type="text" inputmode="numeric" id="l_car_st" placeholder="0" autocomplete="off"><span class="amount-words" id="words_l_car_st" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_tax">Tax Dues</label><div class="pfx"><input type="text" inputmode="numeric" id="l_tax" placeholder="0" autocomplete="off"><span class="amount-words" id="words_l_tax" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Short Term Total</span><strong id="sub-st">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">🏠 Long Term</div>
-        <div class="field"><label for="l_home">Home Loan Principal</label><div class="pfx"><input type="number" inputmode="numeric" id="l_home" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_home" aria-live="polite"></span></div></div>
-        <div class="field"><label for="l_car_lt">Car Loan (&gt;3 yr remaining)</label><div class="pfx"><input type="number" inputmode="numeric" id="l_car_lt" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_car_lt" aria-live="polite"></span></div></div>
-        <div class="field"><label for="l_edu_lt">Education Loan</label><div class="pfx"><input type="number" inputmode="numeric" id="l_edu_lt" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_edu_lt" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_home">Home Loan Principal</label><div class="pfx"><input type="text" inputmode="numeric" id="l_home" placeholder="0" autocomplete="off"><span class="amount-words" id="words_l_home" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_car_lt">Car Loan (&gt;3 yr remaining)</label><div class="pfx"><input type="text" inputmode="numeric" id="l_car_lt" placeholder="0" autocomplete="off"><span class="amount-words" id="words_l_car_lt" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_edu_lt">Education Loan</label><div class="pfx"><input type="text" inputmode="numeric" id="l_edu_lt" placeholder="0" autocomplete="off"><span class="amount-words" id="words_l_edu_lt" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Long Term Total</span><strong id="sub-lt">₹0</strong></div>
         <div class="subtotal hi-red" style="margin-top:.45rem"><span>🔴 Total Liabilities</span><strong id="sub-tot-l">₹0</strong></div>
       </div>
@@ -1385,10 +1365,159 @@ header.visible { display: flex; }
 </div>
 
 <script>
-/* ─── STATE ─── */
+/* ══════════════════════════════════════════════
+   INDIAN NUMBER FORMATTING & AMOUNT IN WORDS
+   ══════════════════════════════════════════════ */
+
+/** Format a number with Indian comma system: 1,00,000 */
+function toIndianComma(num) {
+  if (!num && num !== 0) return '';
+  const str = Math.abs(Math.floor(num)).toString();
+  if (str.length <= 3) return str;
+  // Last 3 digits, then groups of 2
+  let result = str.slice(-3);
+  let remaining = str.slice(0, -3);
+  while (remaining.length > 0) {
+    result = remaining.slice(-2) + ',' + result;
+    remaining = remaining.slice(0, -2);
+  }
+  return result;
+}
+
+/** Parse a formatted Indian number string back to a plain number */
+function parseIndianNum(str) {
+  if (!str) return 0;
+  const cleaned = str.replace(/,/g, '').replace(/[^0-9.]/g, '');
+  return parseFloat(cleaned) || 0;
+}
+
+/** Amount in words — Indian system (Rupees only, integer) */
+function amountInWords(num) {
+  num = Math.abs(Math.round(num));
+  if (num === 0) return '';
+
+  const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
+                'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen',
+                'Seventeen', 'Eighteen', 'Nineteen'];
+  const tens = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+  function twoDigits(n) {
+    if (n < 20) return ones[n];
+    return tens[Math.floor(n / 10)] + (n % 10 !== 0 ? ' ' + ones[n % 10] : '');
+  }
+
+  function threeDigits(n) {
+    if (n === 0) return '';
+    if (n < 100) return twoDigits(n);
+    return ones[Math.floor(n / 100)] + ' Hundred' + (n % 100 !== 0 ? ' ' + twoDigits(n % 100) : '');
+  }
+
+  // Indian system: Crore, Lakh, Thousand
+  const crore  = Math.floor(num / 1e7);
+  const lakh   = Math.floor((num % 1e7) / 1e5);
+  const thou   = Math.floor((num % 1e5) / 1e3);
+  const rem    = num % 1e3;
+
+  let parts = [];
+  if (crore > 0)  parts.push(threeDigits(crore) + ' Crore');
+  if (lakh > 0)   parts.push(twoDigits(lakh) + ' Lakh');
+  if (thou > 0)   parts.push(threeDigits(thou) + ' Thousand');
+  if (rem > 0)    parts.push(threeDigits(rem));
+
+  return parts.join(' ') + ' Rupees';
+}
+
+/** Update formatted display and words for a single input */
+function updateFieldDisplay(input) {
+  // Get cursor position before we modify value
+  const caretPos = input.selectionStart;
+  const rawDigits = input.value.replace(/,/g, '').replace(/[^0-9]/g, '');
+
+  if (rawDigits === '' || rawDigits === '0') {
+    input.value = rawDigits;
+    hideWords(input);
+    return;
+  }
+
+  const num = parseInt(rawDigits, 10);
+  const formatted = toIndianComma(num);
+
+  // Count commas before caret in OLD value
+  const oldVal = input.value;
+  const oldCommasBefore = (oldVal.slice(0, caretPos).match(/,/g) || []).length;
+
+  input.value = formatted;
+
+  // Restore caret: count commas in new value up to same digit position
+  const newCommasBefore = (formatted.slice(0, caretPos + (formatted.length - oldVal.length)).match(/,/g) || []).length;
+  const newCaret = Math.min(caretPos + (newCommasBefore - oldCommasBefore), formatted.length);
+  try { input.setSelectionRange(newCaret, newCaret); } catch(e) {}
+
+  // Show words
+  const wordsEl = document.getElementById('words_' + input.id);
+  if (wordsEl && num > 0) {
+    wordsEl.textContent = amountInWords(num);
+    input.closest('.pfx').classList.add('has-words');
+  } else {
+    hideWords(input);
+  }
+}
+
+function hideWords(input) {
+  const wordsEl = document.getElementById('words_' + input.id);
+  if (wordsEl) wordsEl.textContent = '';
+  input.closest('.pfx').classList.remove('has-words');
+}
+
+/** Get raw numeric value from a formatted input */
+function g(id) {
+  const el = document.getElementById(id);
+  if (!el) return 0;
+  return parseIndianNum(el.value);
+}
+
+/* ══════════════════════════════════════════════
+   BIND ALL INPUTS
+   ══════════════════════════════════════════════ */
+function bindAllInputs() {
+  document.querySelectorAll('input[inputmode="numeric"]').forEach(input => {
+    input.addEventListener('input', function() {
+      updateFieldDisplay(this);
+      calc();
+    });
+    input.addEventListener('keydown', function(e) {
+      // Allow: backspace, delete, arrows, tab, home, end
+      const allowed = ['Backspace','Delete','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Tab','Home','End','Enter'];
+      if (allowed.includes(e.key)) return;
+      // Allow ctrl/cmd combos
+      if (e.ctrlKey || e.metaKey) return;
+      // Only allow digits
+      if (!/^\d$/.test(e.key)) e.preventDefault();
+    });
+    // On paste, strip non-digits
+    input.addEventListener('paste', function(e) {
+      e.preventDefault();
+      const pasted = (e.clipboardData || window.clipboardData).getData('text');
+      const digits = pasted.replace(/[^0-9]/g, '');
+      if (digits) {
+        const start = this.selectionStart;
+        const end = this.selectionEnd;
+        const raw = this.value.replace(/,/g, '');
+        const newRaw = raw.slice(0, start) + digits + raw.slice(end);
+        this.value = newRaw;
+        updateFieldDisplay(this);
+        calc();
+      }
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════
+   STATE
+   ══════════════════════════════════════════════ */
 let currentSection = 0;
 
-/* ─── FORMATTING ─── */
+/* ─── FORMATTING FOR DISPLAY ─── */
 function fmt(n) {
   if (isNaN(n) || n === null || n === undefined) return '₹0';
   const abs = Math.abs(n);
@@ -1399,26 +1528,6 @@ function fmt(n) {
   return pre + '₹' + Math.round(abs).toLocaleString('en-IN');
 }
 
-function fmtHint(n) {
-  if (!n || isNaN(n) || n == 0) return '';
-  const abs = Math.abs(n), pre = n < 0 ? '− ' : '';
-  if (abs >= 1e7) return pre + '₹' + (abs / 1e7).toFixed(abs % 1e7 === 0 ? 0 : 2) + ' Crore';
-  if (abs >= 1e5) return pre + '₹' + (abs / 1e5).toFixed(abs % 1e5 === 0 ? 0 : 2) + ' Lakh';
-  if (abs >= 1e3) return pre + '₹' + (abs / 1e3).toFixed(abs % 1e3 === 0 ? 0 : 1) + ' Thousand';
-  return pre + '₹' + Math.round(abs).toLocaleString('en-IN');
-}
-
-function updateHint(input) {
-  const val = parseFloat(input.value) || 0;
-  const hint = document.getElementById('hint_' + input.id);
-  if (!hint) return;
-  const txt = val > 999 ? '= ' + fmtHint(val) : '';
-  hint.textContent = txt;
-  input.closest('.pfx').classList.toggle('has-hint', !!txt);
-}
-
-/* ─── HELPERS ─── */
-function g(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
 function s(id, val) { const el = document.getElementById(id); if (el) el.innerHTML = val; }
 
 /* ─── VIEW MANAGEMENT ─── */
@@ -1431,8 +1540,6 @@ function showView(name) {
   document.getElementById('main-header').classList.toggle('visible', name !== 'dashboard');
   document.getElementById('section-nav').classList.toggle('show', name === 'section');
   document.getElementById('hdr-edit-btn').style.display = (name === 'summary') ? 'inline-flex' : 'none';
-
-  // Update ARIA on main elements
   document.getElementById('dashboard').setAttribute('aria-hidden', name !== 'dashboard' ? 'true' : 'false');
 }
 
@@ -1447,7 +1554,6 @@ function openSection(idx) {
   });
   document.getElementById('btn-prev').disabled = (idx === 0);
   document.getElementById('btn-next').disabled = (idx === 3);
-  // Scroll to top smoothly
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1493,7 +1599,6 @@ function calc() {
   const pct = totalCap > 0 ? Math.min(100, (totalAssets / totalCap) * 100) : 0;
   const alRatio = totalLiab ? totalAssets / totalLiab : null;
 
-  // Update display
   s('sub-gross', fmt(gross));
   s('sub-ded', fmt(ded));
   s('sub-net', fmt(netInc));
@@ -1518,12 +1623,10 @@ function calc() {
   s('d-assets', fmt(totalAssets));
   s('d-liab', fmt(totalLiab));
 
-  // Net worth display
   const nwEl = document.getElementById('disp-networth');
   nwEl.innerHTML = fmt(netWorth);
   nwEl.className = 'nw-big ' + (netWorth >= 0 ? 'pos' : 'neg');
 
-  // Progress bar
   const bar = document.getElementById('nw-bar');
   bar.style.width = pct + '%';
   bar.setAttribute('aria-valuenow', Math.round(pct));
@@ -1531,7 +1634,6 @@ function calc() {
   pctTxt.textContent = pct.toFixed(0) + '%';
   pctTxt.style.color = pct < 18 ? 'var(--text)' : '#fff';
 
-  // Net worth status
   s('nw-ratio', alRatio ? alRatio.toFixed(2) + 'x' : 'No liabilities');
   const st = document.getElementById('nw-status');
   if (pct >= 80) {
@@ -1550,9 +1652,6 @@ function calc() {
 
   window._fd = { gross, ded, netInc, expenses, emis, totalExp, surplus, subLiq, subSaf, subGrw, totalAssets, subST, subLT, totalLiab, netWorth, savRate, alRatio, pct };
   saveData();
-
-  // Update all hints live on input
-  document.querySelectorAll('input[type="number"][id]').forEach(inp => updateHint(inp));
 }
 
 /* ─── GRADE SCORING ─── */
@@ -1641,19 +1740,34 @@ function openSummaryPage() {
 function saveData() {
   try {
     const data = {};
-    document.querySelectorAll('input[id]').forEach(el => { data[el.id] = el.value; });
-    localStorage.setItem('fd_v3', JSON.stringify(data));
-  } catch (e) { /* localStorage may be unavailable in private mode */ }
+    document.querySelectorAll('input[id]').forEach(el => {
+      // Save raw numeric value (strip commas)
+      data[el.id] = parseIndianNum(el.value).toString();
+    });
+    localStorage.setItem('fd_v4', JSON.stringify(data));
+  } catch (e) {}
 }
 
 function loadData() {
   try {
-    const raw = localStorage.getItem('fd_v3');
+    // Try new key first, fallback to old key
+    const raw = localStorage.getItem('fd_v4') || localStorage.getItem('fd_v3');
     if (raw) {
       const data = JSON.parse(raw);
       Object.keys(data).forEach(id => {
         const el = document.getElementById(id);
-        if (el) el.value = data[id];
+        if (el && data[id] && data[id] !== '0') {
+          const num = parseFloat(data[id]) || 0;
+          if (num > 0) {
+            el.value = toIndianComma(num);
+            // Show words
+            const wordsEl = document.getElementById('words_' + id);
+            if (wordsEl) {
+              wordsEl.textContent = amountInWords(num);
+              el.closest('.pfx').classList.add('has-words');
+            }
+          }
+        }
       });
       calc();
     }
@@ -1662,11 +1776,15 @@ function loadData() {
 
 function clearAll() {
   if (confirm('Delete all local data and reset the scorecard?')) {
-    try { localStorage.removeItem('fd_v3'); } catch (e) {}
+    try {
+      localStorage.removeItem('fd_v4');
+      localStorage.removeItem('fd_v3');
+    } catch (e) {}
     document.querySelectorAll('input[id]').forEach(el => el.value = '');
-    document.querySelectorAll('.readable-hint').forEach(h => {
+    document.querySelectorAll('.amount-words').forEach(h => {
       h.textContent = '';
-      h.closest('.pfx').classList.remove('has-hint');
+      const pfx = h.closest('.pfx');
+      if (pfx) pfx.classList.remove('has-words');
     });
     calc();
     backToDash();
@@ -1676,14 +1794,13 @@ function clearAll() {
 function closeTrust() {
   document.getElementById('trust-modal').style.display = 'none';
   try { localStorage.setItem('fd_trust_v3', '1'); } catch (e) {}
-  // Focus on first interactive element after modal closes
   setTimeout(() => {
     const firstCard = document.querySelector('.score-card');
     if (firstCard) firstCard.focus();
   }, 100);
 }
 
-/* ─── SWIPE TO DISMISS TRUST MODAL ON MOBILE ─── */
+/* ─── SWIPE TRUST MODAL ─── */
 (function() {
   let startY = 0, isDragging = false;
   const card = document.querySelector('.trust-card');
@@ -1704,15 +1821,12 @@ function closeTrust() {
     if (!isDragging) return;
     isDragging = false;
     const dy = e.changedTouches[0].clientY - startY;
-    if (dy > 80) {
-      closeTrust();
-    } else {
-      card.style.transform = '';
-    }
+    if (dy > 80) closeTrust();
+    else card.style.transform = '';
   }, { passive: true });
 })();
 
-/* ─── KEYBOARD SHORTCUT ─── */
+/* ─── KEYBOARD ─── */
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && document.getElementById('trust-modal').style.display !== 'none') {
     closeTrust();
@@ -1726,6 +1840,7 @@ window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('trust-modal').style.display = 'none';
     }
   } catch (e) {}
+  bindAllInputs();
   loadData();
   window._fd = window._fd || {};
 });
