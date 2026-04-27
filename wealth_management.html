@@ -2,412 +2,1249 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover"/>
+<meta name="theme-color" content="#0b1829"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>Finance Doctor – Financial Scorecard</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Syne:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --bg:#f0f4fa;
-  --surface:#ffffff;
-  --surface2:#e8eef8;
-  --surface3:#dce6f4;
-  --border:#cdd9ef;
-  --border2:#aec0e6;
-  --text:#0b1829;
-  --muted:#5a7299;
-  --faint:#8ba3c4;
-  --green:#00a878;
-  --green-light:rgba(0,168,120,.1);
-  --green-border:rgba(0,168,120,.25);
-  --blue:#1a5fd4;
-  --blue-light:rgba(26,95,212,.1);
-  --blue-border:rgba(26,95,212,.25);
-  --red:#d93550;
-  --red-light:rgba(217,53,80,.08);
-  --red-border:rgba(217,53,80,.2);
-  --amber:#d4790a;
-  --amber-light:rgba(212,121,10,.08);
-  --amber-border:rgba(212,121,10,.2);
-  --purple:#6d4fe0;
-  --r:18px;--rs:10px;
-  --tr:all .22s cubic-bezier(.4,0,.2,1);
-  --fd-sky:#5bc8e8;
-  --fd-sky-dark:#3ab0d4;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;font-size:14px;line-height:1.5;}
-::selection{background:rgba(26,95,212,.15);color:var(--text)}
-
-.fd-logo-block{
-  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
-  background:var(--fd-sky);border-radius:12px;padding:.55rem 1.2rem .45rem;line-height:1;
-  box-shadow:0 4px 16px rgba(91,200,232,.3);user-select:none;
-}
-.fd-logo-block .fd-main{font-family:'Syne',sans-serif;font-weight:700;font-size:clamp(.95rem,2.5vw,1.15rem);color:#fff;letter-spacing:.06em;text-align:center;display:block;line-height:1.1;text-transform:uppercase;}
-.fd-logo-block .fd-estd{font-family:'Syne',sans-serif;font-size:.58rem;font-weight:500;color:rgba(255,255,255,.85);letter-spacing:.08em;margin-top:.25rem;text-align:center;}
-.fd-logo-sm{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;background:var(--fd-sky);border-radius:10px;padding:.28rem .75rem .22rem;line-height:1;box-shadow:0 3px 12px rgba(91,200,232,.3);}
-.fd-logo-sm .fd-main-sm{font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;color:#fff;letter-spacing:.06em;text-transform:uppercase;line-height:1.1;}
-.fd-logo-sm .fd-estd-sm{font-size:.5rem;color:rgba(255,255,255,.8);letter-spacing:.07em;margin-top:.18rem;}
-
-#trust-modal{position:fixed;inset:0;background:rgba(8,18,40,.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1.5rem;backdrop-filter:blur(12px);}
-.trust-card{background:var(--surface);border:1px solid var(--border2);border-radius:24px;padding:2.5rem 2rem;max-width:480px;width:100%;text-align:center;box-shadow:0 40px 100px rgba(26,95,212,.18),0 0 0 1px rgba(255,255,255,.5) inset;animation:zoomIn .35s cubic-bezier(.34,1.56,.64,1);}
-@keyframes zoomIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
-.trust-icon{width:68px;height:68px;border-radius:50%;background:var(--green-light);border:2px solid var(--green-border);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:28px;}
-.trust-card h2{font-family:'Playfair Display',serif;font-size:1.85rem;margin-bottom:.6rem;color:var(--text);}
-.trust-card>p{color:var(--muted);line-height:1.7;font-size:.9rem}
-.trust-points{background:var(--green-light);border:1px solid var(--green-border);border-radius:var(--rs);padding:1rem 1.2rem;margin:1.1rem 0;text-align:left;}
-.tp{display:flex;align-items:flex-start;gap:.6rem;font-size:.84rem;color:var(--muted);margin-bottom:.5rem}
-.tp:last-child{margin-bottom:0}
-.tp-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;margin-top:.35rem}
-.btn-trust{background:linear-gradient(135deg,var(--green),#008a62);color:#fff;font-weight:700;letter-spacing:.04em;border:none;border-radius:var(--rs);padding:.9rem 2rem;cursor:pointer;width:100%;margin-top:1rem;font-size:.92rem;font-family:'Syne',sans-serif;transition:var(--tr);}
-.btn-trust:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,168,120,.4)}
-
-header{display:none;padding:.7rem 1.5rem;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(255,255,255,.97);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100;gap:.75rem;flex-wrap:wrap;}
-header.visible{display:flex}
-.hdr-right{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
-.offline-pill{display:flex;align-items:center;gap:.4rem;background:var(--green-light);border:1px solid var(--green-border);border-radius:20px;padding:.28rem .75rem;font-size:.72rem;font-weight:600;color:var(--green);}
-.pulse{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.hbtn{background:transparent;border:1px solid var(--border2);color:var(--muted);font-family:'Syne',sans-serif;font-size:.76rem;font-weight:600;padding:.32rem .85rem;border-radius:8px;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:5px;}
-.hbtn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
-.hbtn.back:hover{border-color:var(--amber);color:var(--amber);background:var(--amber-light)}
-.hbtn.print:hover{border-color:var(--green);color:var(--green);background:var(--green-light)}
-.hbtn.danger:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
-
-#dashboard{width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5rem 1.5rem;gap:2rem;}
-.dash-hero{text-align:center;max-width:500px;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
-.dash-eyebrow{font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);display:inline-flex;align-items:center;gap:.4rem;background:var(--blue-light);border:1px solid var(--blue-border);border-radius:20px;padding:.3rem .9rem;}
-.dash-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,2.8rem);line-height:1.15;color:var(--text);margin:0;}
-.dash-hero h1 em{color:var(--blue);font-style:italic}
-.dash-hero p{color:var(--muted);font-size:.88rem;line-height:1.7}
-.cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;width:min(640px,100%);}
-.score-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:1.4rem;cursor:pointer;transition:var(--tr);position:relative;overflow:hidden;min-height:165px;display:flex;flex-direction:column;justify-content:space-between;}
-.score-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(26,95,212,.12);}
-.sc-stripe{position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;}
-.c-income .sc-stripe{background:linear-gradient(90deg,#00a878,#00d4a0)}
-.c-expense .sc-stripe{background:linear-gradient(90deg,#d93550,#f0607a)}
-.c-assets .sc-stripe{background:linear-gradient(90deg,#1a5fd4,#5498ff)}
-.c-liab .sc-stripe{background:linear-gradient(90deg,#d4790a,#f5a832)}
-.sc-icon-wrap{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:.9rem;}
-.c-income .sc-icon-wrap{background:var(--green-light)}
-.c-expense .sc-icon-wrap{background:var(--red-light)}
-.c-assets .sc-icon-wrap{background:var(--blue-light)}
-.c-liab .sc-icon-wrap{background:var(--amber-light)}
-.sc-lbl{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.3rem;}
-.c-income .sc-lbl{color:var(--green)}
-.c-expense .sc-lbl{color:var(--red)}
-.c-assets .sc-lbl{color:var(--blue)}
-.c-liab .sc-lbl{color:var(--amber)}
-.sc-val{font-family:'JetBrains Mono',monospace;font-size:clamp(1.05rem,2.5vw,1.6rem);font-weight:500;color:var(--text);word-break:break-word;}
-.sc-sub{font-size:.7rem;color:var(--faint);margin-top:.2rem}
-.sc-cta{font-size:.66rem;color:var(--faint);margin-top:.7rem;display:flex;align-items:center;gap:.3rem;}
-
-#section-view{display:none;padding:1.5rem;max-width:1080px;margin:0 auto;padding-bottom:5rem}
-#section-view.visible{display:block}
-.section-nav{display:flex;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:.7rem 1rem;margin-top:10px;margin-bottom:1.5rem;gap:1rem;flex-wrap:wrap;}
-.nav-btn{display:flex;align-items:center;gap:.45rem;background:var(--surface2);border:1px solid var(--border2);border-radius:9px;padding:.45rem .95rem;font-family:'Syne',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:var(--tr);color:var(--muted);white-space:nowrap;}
-.nav-btn:hover:not(:disabled){background:var(--blue-light);border-color:var(--blue);color:var(--blue);}
-.nav-btn:disabled{opacity:.3;cursor:not-allowed;pointer-events:none}
-.nav-center{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center}
-.nav-step{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;cursor:pointer;transition:var(--tr);color:var(--muted);background:transparent;font-family:'Syne',sans-serif;}
-.nav-step:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
-.nav-step.active-0{border-color:var(--green);background:var(--green-light);color:var(--green)}
-.nav-step.active-1{border-color:var(--red);background:var(--red-light);color:var(--red)}
-.nav-step.active-2{border-color:var(--blue);background:var(--blue-light);color:var(--blue)}
-.nav-step.active-3{border-color:var(--amber);background:var(--amber-light);color:var(--amber)}
-.nav-label{font-size:.72rem;color:var(--muted);font-weight:600}
-
-.nw-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem 1.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
-.nw-card::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(26,95,212,.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
-.nw-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem}
-.nw-lbl{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:.3rem}
-.nw-big{font-family:'JetBrains Mono',monospace;font-size:clamp(1.4rem,4vw,2rem);font-weight:500}
-.nw-big.pos{color:var(--green)}
-.nw-big.neg{color:var(--red)}
-.nw-ratio{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--muted)}
-.bar-row{margin-bottom:.35rem}
-.bar-scale{display:flex;justify-content:space-between;font-size:.65rem;color:var(--faint);margin-bottom:5px}
-.bar-track{background:var(--surface2);border-radius:20px;height:16px;overflow:hidden;border:1px solid var(--border)}
-.bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--green));border-radius:20px;width:0%;transition:width .7s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:flex-end;padding-right:7px;min-width:0;}
-.bar-pct{font-size:.65rem;font-weight:700;color:#fff;white-space:nowrap}
-#nw-status{font-size:.8rem;margin-top:.5rem;font-weight:500}
-
-.panel{display:none;animation:panelIn .22s ease}
-.panel.visible{display:block}
-@keyframes panelIn{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:translateX(0)}}
-.panel-hdr{margin-bottom:1.5rem}
-.panel-hdr h2{font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--text);}
-.panel-hdr p{color:var(--muted);font-size:.84rem;margin-top:.25rem}
-.form-grid{display:grid;grid-template-columns:1fr;gap:1.2rem}
-@media(min-width:600px){.form-grid{grid-template-columns:1fr 1fr}}
-.form-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;}
-.fs-title{font-size:.64rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);border-bottom:1px solid var(--border);padding-bottom:.6rem;margin-bottom:1rem;display:flex;align-items:center;gap:.4rem;}
-.field{margin-bottom:.78rem}
-.field label{font-size:.76rem;font-weight:600;color:var(--muted);margin-bottom:.28rem;display:block;}
-.pfx{position:relative}
-.pfx::before{content:'₹';position:absolute;left:.8rem;top:50%;transform:translateY(-50%);color:var(--blue);font-weight:600;font-size:.88rem;pointer-events:none;z-index:1;}
-.pfx input{width:100%;padding:.52rem .75rem .52rem 1.9rem;background:var(--surface2);border:1px solid var(--border);border-radius:9px 9px 0 0;font-family:'JetBrains Mono',monospace;font-size:.88rem;color:var(--text);transition:var(--tr);outline:none;-moz-appearance:textfield;}
-.pfx input::-webkit-inner-spin-button,.pfx input::-webkit-outer-spin-button{-webkit-appearance:none}
-.pfx input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px rgba(26,95,212,.1);}
-.readable-hint{display:block;width:100%;background:var(--blue-light);border:1px solid var(--blue-border);border-top:none;border-radius:0 0 9px 9px;padding:.22rem .75rem .22rem 1.9rem;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--blue);font-weight:600;min-height:1.5rem;transition:var(--tr);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.readable-hint:empty{background:transparent;border-color:transparent;padding-top:0;padding-bottom:0;min-height:0;}
-.pfx input:focus{border-radius:9px;}
-.pfx:has(.readable-hint:not(:empty)) input{border-radius:9px 9px 0 0 !important;}
-.subtotal{background:var(--surface2);border-radius:9px;padding:.6rem .9rem;display:flex;justify-content:space-between;align-items:center;margin-top:.7rem;font-size:.83rem;border:1px solid var(--border);}
-.subtotal strong{font-family:'JetBrains Mono',monospace;font-size:.88rem;}
-.subtotal.hi-green{background:var(--green-light);border-color:var(--green-border)}
-.subtotal.hi-red{background:var(--red-light);border-color:var(--red-border)}
-.subtotal.hi-blue{background:var(--blue-light);border-color:var(--blue-border)}
-.surplus-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;background:linear-gradient(135deg,rgba(0,168,120,.04),rgba(26,95,212,.04));border:1px solid var(--border2);border-radius:var(--r);padding:1.2rem;margin-top:0;}
-.sur-item{text-align:center}
-.sur-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--faint);margin-bottom:.35rem;font-weight:700}
-.sur-val{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:500}
-.sur-val.g{color:var(--green)}
-.sur-val.r{color:var(--red)}
-.sur-val.b{color:var(--blue)}
-.gen-wrap{display:flex;align-items:center;justify-content:center;margin:2.2rem 0 1rem;gap:1rem;flex-wrap:wrap;}
-.btn-generate{display:inline-flex;align-items:center;gap:.6rem;background:linear-gradient(135deg,var(--blue),#1e7cff);color:#fff;font-weight:700;border:none;border-radius:12px;padding:.88rem 2rem;cursor:pointer;font-family:'Syne',sans-serif;font-size:.88rem;transition:var(--tr);letter-spacing:.04em;box-shadow:0 4px 20px rgba(26,95,212,.35);}
-.btn-generate:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(26,95,212,.45);}
-.btn-generate svg{width:16px;height:16px;flex-shrink:0}
-
-#summary-page{display:none;min-height:100vh;background:var(--bg);padding:0 0 4rem;animation:fadeUp .35s ease;}
-#summary-page.visible{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.sum-page-inner{max-width:900px;margin:0 auto;padding:2rem 1.5rem;}
-.sum-hero{background:linear-gradient(135deg,#0b1829 0%,#122348 100%);padding:2.5rem 1.5rem 3rem;text-align:center;position:relative;overflow:hidden;margin-bottom:0;}
-.sum-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 120%,rgba(26,95,212,.35),transparent);pointer-events:none;}
-.sum-hero-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(139,163,196,.7);margin-bottom:1.2rem;display:inline-flex;align-items:center;gap:.5rem;}
-.sum-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);color:#fff;margin-bottom:.5rem;}
-.sum-hero p{color:rgba(139,163,196,.8);font-size:.85rem}
-.grade-badge{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:90px;height:90px;border-radius:50%;border:3px solid;margin:1.5rem auto .5rem;font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:600;position:relative;z-index:1;box-shadow:0 0 40px rgba(0,0,0,.4);}
-.grade-subtitle{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:0;position:relative;z-index:1;}
-.metrics-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--surface);border:1px solid var(--border);border-radius:0 0 var(--r) var(--r);overflow:hidden;margin-bottom:2rem;border-top:none;}
-@media(max-width:540px){.metrics-strip{grid-template-columns:repeat(2,1fr)}}
-.metric-cell{padding:1.1rem 1rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;}
-.metric-cell:nth-child(3n){border-right:none}
-@media(max-width:540px){.metric-cell:nth-child(2n){border-right:none}}
-.mc-lbl{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:.4rem;}
-.mc-val{font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:500;}
-.analysis-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1.5rem;}
-.analysis-card-hdr{padding:1rem 1.3rem;background:var(--surface2);border-bottom:1px solid var(--border);font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:.5rem;}
-
-/* ── TABLE: uniform white cells, distinct header, styled subtotal rows ── */
-.sc-table{width:100%;border-collapse:collapse;font-size:.82rem;}
-
-.sc-table thead tr{background:var(--surface3);}
-.sc-table th{
-  text-align:left;
-  padding:.6rem .9rem;
-  font-size:.62rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--muted);
-  border-bottom:2px solid var(--border2);
+/* ─── RESET & ROOT ─── */
+:root {
+  --bg: #f0f4fa;
+  --surface: #ffffff;
+  --surface2: #e8eef8;
+  --surface3: #dce6f4;
+  --border: #cdd9ef;
+  --border2: #aec0e6;
+  --text: #0b1829;
+  --muted: #5a7299;
+  --faint: #8ba3c4;
+  --green: #00a878;
+  --green-light: rgba(0,168,120,.1);
+  --green-border: rgba(0,168,120,.25);
+  --blue: #1a5fd4;
+  --blue-light: rgba(26,95,212,.1);
+  --blue-border: rgba(26,95,212,.25);
+  --red: #d93550;
+  --red-light: rgba(217,53,80,.08);
+  --red-border: rgba(217,53,80,.2);
+  --amber: #d4790a;
+  --amber-light: rgba(212,121,10,.08);
+  --amber-border: rgba(212,121,10,.2);
+  --r: 14px;
+  --rs: 10px;
+  --tr: all .22s cubic-bezier(.4,0,.2,1);
+  --fd-sky: #5bc8e8;
+  /* Mobile-safe font sizing */
+  --fs-base: 15px;
+  --fs-sm: 13px;
+  --fs-xs: 11px;
+  --fs-label: 12px;
+  /* Touch target minimum */
+  --touch-min: 48px;
 }
 
-/* KEY FIX: Every body td gets background:white explicitly — no inheritance from thead */
-.sc-table tbody tr{background:#fff;}
-.sc-table tbody td{
-  padding:.6rem .9rem;
-  border-bottom:1px solid var(--border);
-  vertical-align:middle;
-  background:#fff;  /* explicit — prevents thead blue from bleeding into last td */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
 }
-.sc-table tbody tr:last-child td{border-bottom:none;}
 
-/* Subtotal rows: blue-tinted */
-.sc-table tbody tr.row-bold{background:#f0f5ff;}
-.sc-table tbody tr.row-bold td{background:#f0f5ff;}
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Prevent overscroll bounce background flash */
+  background: #0b1829;
+}
 
-/* ── END TABLE ── */
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+}
 
-.st-ok{color:var(--green);font-weight:700}
-.st-warn{color:var(--amber);font-weight:700}
-.st-na{color:var(--faint)}
-.st-fill{color:var(--muted)}
-.insight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1.5rem;}
-.insight-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.1rem 1.2rem;border-left:3px solid var(--border2);}
-.insight-card.ok{border-left-color:var(--green)}
-.insight-card.warn{border-left-color:var(--amber)}
-.insight-card.bad{border-left-color:var(--red)}
-.ins-icon{font-size:1.3rem;margin-bottom:.5rem}
-.ins-title{font-size:.76rem;font-weight:700;margin-bottom:.25rem}
-.ins-body{font-size:.74rem;color:var(--muted);line-height:1.6}
-.sum-footer-note{text-align:center;font-size:.74rem;color:var(--faint);padding:1.5rem;border-top:1px solid var(--border);margin-top:1rem;}
+::selection { background: rgba(26,95,212,.15); color: var(--text); }
 
-@media print{
-  #trust-modal,.hbtn,.offline-pill,.sc-cta,.gen-wrap{display:none!important}
-  #dashboard{display:flex!important;min-height:auto!important;padding:1rem!important}
-  #section-view{display:block!important}
-  #summary-page{display:block!important}
-  header{display:flex!important;position:static!important;box-shadow:none!important}
-  .panel{display:block!important}
-  .nw-card,.form-section,.surplus-row,.metric-cell{break-inside:avoid}
-  body{background:#fff;font-size:11px}
-  .form-grid{grid-template-columns:1fr 1fr!important}
-  .sum-hero{background:#0b1829!important;-webkit-print-color-adjust:exact}
-  .sc-table tbody td{background:#fff!important;-webkit-print-color-adjust:exact}
-  .sc-table tbody tr.row-bold td{background:#f0f5ff!important;-webkit-print-color-adjust:exact}
+/* ─── TRUST MODAL ─── */
+#trust-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(8,18,40,.8);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  /* Fix iOS backdrop-filter stacking */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+@media (min-width: 600px) {
+  #trust-modal { align-items: center; padding: 1.5rem; }
+}
+
+.trust-card {
+  background: var(--surface);
+  border-radius: 22px 22px 0 0;
+  padding: 1.75rem 1.25rem;
+  /* Safe area for home indicator */
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom, 20px));
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 -20px 60px rgba(26,95,212,.2);
+  animation: slideUp .35s cubic-bezier(.34,1.56,.64,1);
+  /* Prevent content from going under home indicator */
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+
+@media (min-width: 600px) {
+  .trust-card {
+    border-radius: 22px;
+    max-width: 460px;
+    padding: 2.5rem 2rem;
+    animation: zoomIn .35s cubic-bezier(.34,1.56,.64,1);
+    max-height: none;
+  }
+}
+
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes zoomIn { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: scale(1); } }
+
+.trust-drag {
+  width: 40px;
+  height: 4px;
+  background: var(--border2);
+  border-radius: 4px;
+  margin: 0 auto 1.4rem;
+  display: block;
+}
+@media (min-width: 600px) { .trust-drag { display: none; } }
+
+.trust-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--green-light);
+  border: 2px solid var(--green-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.1rem;
+  font-size: 24px;
+}
+
+.trust-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.3rem, 5vw, 1.6rem);
+  margin-bottom: .45rem;
+}
+
+.trust-card > p {
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: var(--fs-sm);
+}
+
+.trust-points {
+  background: var(--green-light);
+  border: 1px solid var(--green-border);
+  border-radius: var(--rs);
+  padding: .85rem 1rem;
+  margin: .9rem 0;
+  text-align: left;
+}
+
+.tp {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  margin-bottom: .5rem;
+  line-height: 1.5;
+}
+.tp:last-child { margin-bottom: 0; }
+.tp-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; margin-top: .38rem; }
+
+.btn-trust {
+  background: linear-gradient(135deg, var(--green), #008a62);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .04em;
+  border: none;
+  border-radius: 14px;
+  padding: 0 2rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: .7rem;
+  font-size: 1rem;
+  font-family: 'Syne', sans-serif;
+  transition: var(--tr);
+  min-height: var(--touch-min);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Active state for mobile */
+  -webkit-user-select: none;
+  user-select: none;
+}
+.btn-trust:active { transform: scale(.97); opacity: .9; }
+
+/* ─── HEADER ─── */
+header {
+  display: none;
+  padding: .6rem max(1rem, env(safe-area-inset-right, 0px)) .6rem max(1rem, env(safe-area-inset-left, 0px));
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.97);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  /* Cover area under status bar on iOS */
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  gap: .4rem;
+  min-height: 54px;
+}
+header.visible { display: flex; }
+
+.hdr-left { display: flex; align-items: center; gap: .5rem; flex: 1; min-width: 0; }
+.hdr-right { display: flex; align-items: center; gap: .35rem; flex-shrink: 0; }
+
+.fd-logo-sm {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--fd-sky);
+  border-radius: 8px;
+  padding: .22rem .6rem .18rem;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(91,200,232,.3);
+  cursor: pointer;
+  flex-shrink: 0;
+  /* Touch area */
+  min-width: var(--touch-min);
+  min-height: 36px;
+}
+.fd-logo-sm .fd-main-sm {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: .7rem;
+  color: #fff;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+.fd-logo-sm .fd-estd-sm {
+  font-size: .45rem;
+  color: rgba(255,255,255,.8);
+  letter-spacing: .07em;
+  margin-top: .08rem;
+}
+
+.offline-pill {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  background: var(--green-light);
+  border: 1px solid var(--green-border);
+  border-radius: 20px;
+  padding: .25rem .65rem;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--green);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.pill-text { display: none; }
+@media (min-width: 400px) { .pill-text { display: inline; } }
+
+.pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: blink 2s infinite;
+  flex-shrink: 0;
+}
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+.hbtn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  font-family: 'Syne', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: 0 .7rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--tr);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  min-height: var(--touch-min);
+  /* Larger touch target */
+  min-width: 44px;
+}
+.hbtn:active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+.hbtn.hbtn-print { display: none; }
+@media (min-width: 560px) { .hbtn.hbtn-print { display: inline-flex; } }
+
+/* ─── DASHBOARD ─── */
+#dashboard {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: max(2rem, calc(env(safe-area-inset-top, 0px) + 1.5rem)) 1rem calc(2rem + env(safe-area-inset-bottom, 0px));
+  gap: 1.5rem;
+}
+@media (min-width: 500px) {
+  #dashboard { justify-content: center; gap: 2rem; }
+}
+
+.fd-logo-block {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--fd-sky);
+  border-radius: 12px;
+  padding: .5rem 1.1rem .4rem;
+  line-height: 1;
+  box-shadow: 0 4px 20px rgba(91,200,232,.3);
+  user-select: none;
+}
+.fd-logo-block .fd-main {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  letter-spacing: .06em;
+  text-align: center;
+  display: block;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.fd-logo-block .fd-estd {
+  font-family: 'Syne', sans-serif;
+  font-size: .52rem;
+  font-weight: 500;
+  color: rgba(255,255,255,.85);
+  letter-spacing: .08em;
+  margin-top: .2rem;
+  text-align: center;
+}
+
+.dash-hero {
+  text-align: center;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .85rem;
+}
+.dash-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.7rem, 7vw, 2.6rem);
+  line-height: 1.15;
+  color: var(--text);
+}
+.dash-hero h1 em { color: var(--blue); font-style: italic; }
+.dash-hero p { color: var(--muted); font-size: var(--fs-sm); line-height: 1.7; }
+
+/* ─── DASHBOARD CARDS ─── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  width: 100%;
+  max-width: 560px;
+}
+@media (min-width: 480px) { .cards-grid { gap: 1rem; } }
+
+.score-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 1rem;
+  cursor: pointer;
+  transition: var(--tr);
+  position: relative;
+  overflow: hidden;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* Improve tap responsiveness */
+  -webkit-user-select: none;
+  user-select: none;
+  /* Hardware acceleration */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.score-card:active { transform: scale(.96); opacity: .9; }
+@media (hover: hover) {
+  .score-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(26,95,212,.12); }
+}
+
+.sc-stripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--r) var(--r) 0 0;
+}
+.c-income .sc-stripe { background: linear-gradient(90deg, #00a878, #00d4a0); }
+.c-expense .sc-stripe { background: linear-gradient(90deg, #d93550, #f0607a); }
+.c-assets .sc-stripe { background: linear-gradient(90deg, #1a5fd4, #5498ff); }
+.c-liab .sc-stripe { background: linear-gradient(90deg, #d4790a, #f5a832); }
+
+.sc-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  margin-bottom: .6rem;
+}
+.c-income .sc-icon-wrap { background: var(--green-light); }
+.c-expense .sc-icon-wrap { background: var(--red-light); }
+.c-assets .sc-icon-wrap { background: var(--blue-light); }
+.c-liab .sc-icon-wrap { background: var(--amber-light); }
+
+.sc-lbl {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: .2rem;
+}
+.c-income .sc-lbl { color: var(--green); }
+.c-expense .sc-lbl { color: var(--red); }
+.c-assets .sc-lbl { color: var(--blue); }
+.c-liab .sc-lbl { color: var(--amber); }
+
+.sc-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(.85rem, 3.5vw, 1.3rem);
+  font-weight: 500;
+  color: var(--text);
+  word-break: break-all;
+  line-height: 1.2;
+}
+.sc-sub { font-size: var(--fs-xs); color: var(--faint); margin-top: .12rem; }
+.sc-cta {
+  font-size: var(--fs-xs);
+  color: var(--faint);
+  margin-top: .5rem;
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+}
+
+/* ─── SECTION VIEW ─── */
+#section-view {
+  display: none;
+  padding: .75rem max(.75rem, env(safe-area-inset-right, 0px)) calc(6rem + env(safe-area-inset-bottom, 0px)) max(.75rem, env(safe-area-inset-left, 0px));
+  max-width: 1080px;
+  margin: 0 auto;
+}
+@media (min-width: 600px) {
+  #section-view { padding: 1.25rem 1.25rem calc(5.5rem + env(safe-area-inset-bottom, 0px)); }
+}
+#section-view.visible { display: block; }
+
+/* ─── NET WORTH CARD ─── */
+.nw-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1rem 1rem .9rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+.nw-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: .9rem;
+}
+.nw-lbl {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: .2rem;
+}
+.nw-big {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(1.15rem, 5vw, 1.85rem);
+  font-weight: 500;
+}
+.nw-big.pos { color: var(--green); }
+.nw-big.neg { color: var(--red); }
+.nw-ratio { font-family: 'JetBrains Mono', monospace; font-size: var(--fs-sm); color: var(--muted); }
+
+.bar-row { margin-bottom: .3rem; }
+.bar-scale { display: flex; justify-content: space-between; font-size: var(--fs-xs); color: var(--faint); margin-bottom: 5px; }
+.bar-track {
+  background: var(--surface2);
+  border-radius: 20px;
+  height: 15px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  border-radius: 20px;
+  width: 0%;
+  transition: width .7s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+}
+.bar-pct { font-size: var(--fs-xs); font-weight: 700; color: #fff; white-space: nowrap; }
+#nw-status { font-size: var(--fs-sm); margin-top: .45rem; font-weight: 500; }
+
+/* ─── PANELS ─── */
+.panel { display: none; animation: panelIn .22s ease; }
+.panel.visible { display: block; }
+@keyframes panelIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+
+.panel-hdr { margin-bottom: 1rem; }
+.panel-hdr h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.3rem, 5vw, 1.75rem);
+  color: var(--text);
+}
+.panel-hdr p { color: var(--muted); font-size: var(--fs-sm); margin-top: .2rem; }
+
+/* ─── FORM GRID ─── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 640px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+
+.form-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1rem;
+}
+
+.fs-title {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--faint);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: .55rem;
+  margin-bottom: .9rem;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+.field { margin-bottom: .75rem; }
+.field label {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: .28rem;
+  display: block;
+  /* Prevent label from being tiny */
+  min-font-size: 12px;
+}
+
+/* ─── INPUT WITH PREFIX ─── */
+.pfx { position: relative; }
+.pfx::before {
+  content: '₹';
+  position: absolute;
+  left: .8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--blue);
+  font-weight: 600;
+  font-size: .9rem;
+  pointer-events: none;
+  z-index: 1;
+}
+/* When hint is shown, shift prefix up */
+.pfx.has-hint::before { top: calc(50% - 10px); }
+
+.pfx input {
+  width: 100%;
+  padding: 0 .8rem 0 2rem;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem; /* Minimum 16px rendered prevents iOS zoom */
+  color: var(--text);
+  transition: var(--tr);
+  outline: none;
+  -moz-appearance: textfield;
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: var(--touch-min);
+  /* Prevent auto zoom on focus on iOS */
+  font-size: max(16px, 1rem);
+}
+.pfx input::-webkit-inner-spin-button,
+.pfx input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.pfx input:focus {
+  border-color: var(--blue);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(26,95,212,.12);
+}
+.pfx.has-hint input {
+  border-radius: 10px 10px 0 0;
+  border-bottom-color: transparent;
+}
+
+.readable-hint {
+  display: none;
+  width: 100%;
+  background: var(--blue-light);
+  border: 1.5px solid var(--blue-border);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: .22rem .8rem .22rem 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--fs-xs);
+  color: var(--blue);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pfx.has-hint .readable-hint { display: block; }
+
+.subtotal {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: .55rem .85rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: .65rem;
+  font-size: var(--fs-sm);
+  border: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: .3rem;
+}
+.subtotal strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .88rem;
+  white-space: nowrap;
+}
+.subtotal.hi-green { background: var(--green-light); border-color: var(--green-border); }
+.subtotal.hi-red { background: var(--red-light); border-color: var(--red-border); }
+.subtotal.hi-blue { background: var(--blue-light); border-color: var(--blue-border); }
+
+/* ─── SURPLUS ROW ─── */
+.surplus-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .6rem;
+  background: linear-gradient(135deg, rgba(0,168,120,.04), rgba(26,95,212,.04));
+  border: 1px solid var(--border2);
+  border-radius: var(--r);
+  padding: .9rem .8rem;
+}
+.surplus-row-4 { grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 480px) { .surplus-row-4 { grid-template-columns: repeat(4, 1fr); } }
+
+.sur-item { text-align: center; }
+.sur-lbl {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--faint);
+  margin-bottom: .3rem;
+  font-weight: 700;
+}
+.sur-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .9rem;
+  font-weight: 500;
+  word-break: break-all;
+}
+.sur-val.g { color: var(--green); }
+.sur-val.r { color: var(--red); }
+.sur-val.b { color: var(--blue); }
+
+/* ─── GENERATE BUTTON ─── */
+.gen-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.75rem 0 .5rem;
+}
+.btn-generate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  background: linear-gradient(135deg, var(--blue), #1e7cff);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  padding: 0 1.75rem;
+  cursor: pointer;
+  font-family: 'Syne', sans-serif;
+  font-size: 1rem;
+  transition: var(--tr);
+  letter-spacing: .04em;
+  box-shadow: 0 4px 20px rgba(26,95,212,.35);
+  min-height: 56px;
+  width: 100%;
+  max-width: 360px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.btn-generate:active { transform: scale(.97); box-shadow: 0 2px 10px rgba(26,95,212,.2); }
+@media (hover: hover) { .btn-generate:hover { box-shadow: 0 8px 30px rgba(26,95,212,.45); } }
+.btn-generate svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ─── FIXED BOTTOM SECTION NAV ─── */
+.section-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,.98);
+  border-top: 1px solid var(--border);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  padding: .6rem max(1rem, env(safe-area-inset-right, 0px)) calc(.6rem + env(safe-area-inset-bottom, 20px)) max(1rem, env(safe-area-inset-left, 0px));
+  z-index: 50;
+  gap: .4rem;
+  /* Fix for iOS Safari bottom nav */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.section-nav.show { display: flex; }
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 0 1rem;
+  font-family: 'Syne', sans-serif;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--tr);
+  color: var(--muted);
+  white-space: nowrap;
+  min-height: var(--touch-min);
+  min-width: 72px;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.nav-btn:active:not(:disabled) { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+.nav-btn:disabled { opacity: .3; cursor: not-allowed; pointer-events: none; }
+
+.nav-center { display: flex; align-items: center; gap: .45rem; }
+.nav-step {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--tr);
+  color: var(--muted);
+  background: transparent;
+  font-family: 'Syne', sans-serif;
+  /* Larger than visual to improve tapping */
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  -webkit-user-select: none;
+  user-select: none;
+}
+.nav-step:active { opacity: .7; }
+.nav-step.active-0 { border-color: var(--green); background: var(--green-light); color: var(--green); }
+.nav-step.active-1 { border-color: var(--red); background: var(--red-light); color: var(--red); }
+.nav-step.active-2 { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+.nav-step.active-3 { border-color: var(--amber); background: var(--amber-light); color: var(--amber); }
+
+/* ─── SUMMARY PAGE ─── */
+#summary-page {
+  display: none;
+  min-height: 100dvh;
+  background: var(--bg);
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+  animation: fadeUp .3s ease;
+}
+#summary-page.visible { display: block; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.sum-hero {
+  background: linear-gradient(135deg, #0b1829 0%, #122348 100%);
+  padding: 2rem max(1.25rem, env(safe-area-inset-right, 0px)) 2.5rem max(1.25rem, env(safe-area-inset-left, 0px));
+  /* Add top padding for safe area */
+  padding-top: calc(2rem + env(safe-area-inset-top, 0px));
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.sum-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 120%, rgba(26,95,212,.35), transparent);
+  pointer-events: none;
+}
+
+.sum-page-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.1rem max(1.1rem, env(safe-area-inset-right, 0px)) 0 max(1.1rem, env(safe-area-inset-left, 0px));
+}
+
+.sum-hero-eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(139,163,196,.7);
+  margin-bottom: .9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+.sum-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.35rem, 5vw, 2.1rem);
+  color: #fff;
+  margin-bottom: .35rem;
+}
+.sum-hero p { color: rgba(139,163,196,.8); font-size: var(--fs-sm); }
+
+.grade-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid;
+  margin: 1.1rem auto .35rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 30px rgba(0,0,0,.35);
+}
+
+/* ─── METRICS STRIP ─── */
+.metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0 0 var(--r) var(--r);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  border-top: none;
+}
+@media (min-width: 540px) { .metrics-strip { grid-template-columns: repeat(3, 1fr); } }
+
+.metric-cell {
+  padding: .9rem .8rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.metric-cell:nth-child(2n) { border-right: none; }
+@media (min-width: 540px) {
+  .metric-cell:nth-child(2n) { border-right: 1px solid var(--border); }
+  .metric-cell:nth-child(3n) { border-right: none; }
+}
+.mc-lbl {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: .35rem;
+}
+.mc-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .9rem;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+/* ─── ANALYSIS CARD ─── */
+.analysis-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 1.1rem;
+}
+.analysis-card-hdr {
+  padding: .85rem 1rem;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+/* ─── SUMMARY TABLE ─── */
+/* Scroll hint gradient */
+.sc-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Scroll hint shadow on right */
+  background:
+    linear-gradient(to right, white 30%, rgba(255,255,255,0)),
+    linear-gradient(to left, white 30%, rgba(255,255,255,0)) 100% 0,
+    linear-gradient(to right, var(--border2), rgba(200,200,200,0)),
+    linear-gradient(to left, var(--border2), rgba(200,200,200,0)) 100% 0;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 60px 100%, 60px 100%, 14px 100%, 14px 100%;
+  background-attachment: local, local, scroll, scroll;
+}
+
+.sc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  min-width: 560px;
+}
+.sc-table thead tr { background: var(--surface3); }
+.sc-table th {
+  text-align: left;
+  padding: .55rem .85rem;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border2);
+  white-space: nowrap;
+}
+.sc-table tbody tr { background: #fff; }
+.sc-table tbody td {
+  padding: .6rem .85rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  background: #fff;
+}
+.sc-table tbody td:nth-child(6) {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  max-width: 200px;
+  white-space: normal;
+}
+.sc-table tbody tr:last-child td { border-bottom: none; }
+.st-ok { color: var(--green); font-weight: 700; }
+.st-warn { color: var(--amber); font-weight: 700; }
+.st-danger { color: var(--red); font-weight: 700; }
+.st-na { color: var(--faint); }
+
+/* Scroll hint label below table on mobile */
+.scroll-hint {
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: var(--faint);
+  padding: .4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .3rem;
+}
+@media (min-width: 620px) { .scroll-hint { display: none; } }
+
+.sum-footer-note {
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: var(--faint);
+  padding: 1.25rem;
+  border-top: 1px solid var(--border);
+  margin-top: .5rem;
+  line-height: 1.65;
+}
+
+/* ─── ACCESSIBILITY ─── */
+/* Focus ring for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ─── PRINT ─── */
+@media print {
+  #trust-modal, .hbtn, .offline-pill, .sc-cta, .gen-wrap, .section-nav, .scroll-hint { display: none !important; }
+  #dashboard { display: flex !important; min-height: auto !important; padding: 1rem !important; }
+  #section-view { display: block !important; padding-bottom: 0 !important; }
+  #summary-page { display: block !important; }
+  header { display: flex !important; position: static !important; }
+  .panel { display: block !important; }
+  .nw-card, .form-section, .surplus-row, .metric-cell { break-inside: avoid; }
+  body { background: #fff; font-size: 11px; }
+  .form-grid { grid-template-columns: 1fr 1fr !important; }
+  .sum-hero { background: #0b1829 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sc-table { min-width: unset !important; }
+  .sc-table-wrap { background: none; }
 }
 </style>
 </head>
 <body>
 
-<div id="trust-modal">
+<!-- TRUST MODAL -->
+<div id="trust-modal" role="dialog" aria-modal="true" aria-labelledby="trust-title">
   <div class="trust-card">
-    <div class="trust-icon">🔒</div>
-    <h2>Your data stays with you</h2>
+    <span class="trust-drag" aria-hidden="true"></span>
+    <div class="trust-icon" aria-hidden="true">🔒</div>
+    <h2 id="trust-title">Your data stays with you</h2>
     <p>This scorecard runs entirely in your browser. No data ever leaves your device — guaranteed.</p>
-    <div class="trust-points">
-      <div class="tp"><div class="tp-dot"></div><span>All values saved to <strong>localStorage</strong> — only on this device</span></div>
-      <div class="tp"><div class="tp-dot"></div><span>Zero network requests, fully anonymous</span></div>
-      <div class="tp"><div class="tp-dot"></div><span>Print or save as PDF anytime with your full data</span></div>
+    <div class="trust-points" role="list">
+      <div class="tp" role="listitem"><div class="tp-dot" aria-hidden="true"></div><span>All values saved to <strong>localStorage</strong> — only on this device</span></div>
+      <div class="tp" role="listitem"><div class="tp-dot" aria-hidden="true"></div><span>Zero network requests, fully anonymous</span></div>
+      <div class="tp" role="listitem"><div class="tp-dot" aria-hidden="true"></div><span>Print or save as PDF anytime</span></div>
     </div>
     <button class="btn-trust" onclick="closeTrust()">Open my scorecard →</button>
   </div>
 </div>
 
-<header id="main-header">
-  <div class="fd-logo-sm" style="cursor:pointer" onclick="backToDash()">
-    <span class="fd-main-sm">FINANCE<br/>DOCTOR</span>
-    <span class="fd-estd-sm">Estd. 2002</span>
+<!-- HEADER -->
+<header id="main-header" role="banner">
+  <div class="hdr-left">
+    <div class="fd-logo-sm" onclick="backToDash()" role="button" tabindex="0" aria-label="Finance Doctor home" onkeydown="if(event.key==='Enter')backToDash()">
+      <span class="fd-main-sm">FINANCE<br/>DOCTOR</span>
+      <span class="fd-estd-sm">Estd. 2002</span>
+    </div>
+    <span class="offline-pill" aria-label="Offline — local data only">
+      <span class="pulse" aria-hidden="true"></span>
+      <span class="pill-text">Offline · local only</span>
+    </span>
   </div>
   <div class="hdr-right">
-    <span class="offline-pill"><span class="pulse"></span>Offline · local only</span>
-    <button class="hbtn back" id="hdr-back-btn" onclick="handleBack()">← Dashboard</button>
-    <button class="hbtn" id="hdr-edit-btn" style="display:none" onclick="backToEdit()">✏️ Edit</button>
-    <button class="hbtn print" onclick="window.print()">🖨 Print / PDF</button>
-    <button class="hbtn danger" onclick="clearAll()">🗑 Clear</button>
+    <button class="hbtn" id="hdr-back-btn" onclick="handleBack()" aria-label="Go back">← Back</button>
+    <button class="hbtn" id="hdr-edit-btn" style="display:none" onclick="backToEdit()" aria-label="Edit data">✏️ Edit</button>
+    <button class="hbtn hbtn-print" onclick="window.print()" aria-label="Print report">🖨 Print</button>
+    <button class="hbtn" onclick="clearAll()" title="Clear all data" aria-label="Clear all data">🗑</button>
   </div>
 </header>
 
-<div id="dashboard">
+<!-- DASHBOARD -->
+<main id="dashboard" role="main">
   <div class="dash-hero">
-    <div class="fd-logo-block">
+    <div class="fd-logo-block" aria-hidden="true">
       <span class="fd-main">FINANCE<br/>DOCTOR</span>
       <span class="fd-estd">Estd. 2002</span>
     </div>
     <h1>Your Personal<br/><em>Financial Scorecard</em></h1>
     <p>Enter your numbers across 4 sections to get a complete picture of your financial health.</p>
   </div>
-  <div class="cards-grid">
-    <div class="score-card c-income" onclick="openSection(0)">
-      <div class="sc-stripe"></div>
-      <div class="sc-icon-wrap">💰</div>
+  <div class="cards-grid" role="list">
+    <div class="score-card c-income" onclick="openSection(0)" role="listitem button" tabindex="0" aria-label="Monthly Income — tap to edit" onkeydown="if(event.key==='Enter')openSection(0)">
+      <div class="sc-stripe" aria-hidden="true"></div>
+      <div class="sc-icon-wrap" aria-hidden="true">💰</div>
       <div>
         <div class="sc-lbl">Monthly Income</div>
         <div class="sc-val" id="d-income">₹0</div>
         <div class="sc-sub">Net take-home</div>
       </div>
-      <div class="sc-cta"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Tap to edit</div>
+      <div class="sc-cta" aria-hidden="true">
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tap to edit
+      </div>
     </div>
-    <div class="score-card c-expense" onclick="openSection(1)">
-      <div class="sc-stripe"></div>
-      <div class="sc-icon-wrap">🛒</div>
+    <div class="score-card c-expense" onclick="openSection(1)" role="listitem button" tabindex="0" aria-label="Monthly Expenses — tap to edit" onkeydown="if(event.key==='Enter')openSection(1)">
+      <div class="sc-stripe" aria-hidden="true"></div>
+      <div class="sc-icon-wrap" aria-hidden="true">🛒</div>
       <div>
         <div class="sc-lbl">Monthly Expenses</div>
         <div class="sc-val" id="d-expense">₹0</div>
         <div class="sc-sub">Outflows + EMIs</div>
       </div>
-      <div class="sc-cta"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Tap to edit</div>
+      <div class="sc-cta" aria-hidden="true">
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tap to edit
+      </div>
     </div>
-    <div class="score-card c-assets" onclick="openSection(2)">
-      <div class="sc-stripe"></div>
-      <div class="sc-icon-wrap">💎</div>
+    <div class="score-card c-assets" onclick="openSection(2)" role="listitem button" tabindex="0" aria-label="Total Assets — tap to edit" onkeydown="if(event.key==='Enter')openSection(2)">
+      <div class="sc-stripe" aria-hidden="true"></div>
+      <div class="sc-icon-wrap" aria-hidden="true">💎</div>
       <div>
         <div class="sc-lbl">Total Assets</div>
         <div class="sc-val" id="d-assets">₹0</div>
         <div class="sc-sub">Wealth total</div>
       </div>
-      <div class="sc-cta"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Tap to edit</div>
+      <div class="sc-cta" aria-hidden="true">
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tap to edit
+      </div>
     </div>
-    <div class="score-card c-liab" onclick="openSection(3)">
-      <div class="sc-stripe"></div>
-      <div class="sc-icon-wrap">🏦</div>
+    <div class="score-card c-liab" onclick="openSection(3)" role="listitem button" tabindex="0" aria-label="Total Liabilities — tap to edit" onkeydown="if(event.key==='Enter')openSection(3)">
+      <div class="sc-stripe" aria-hidden="true"></div>
+      <div class="sc-icon-wrap" aria-hidden="true">🏦</div>
       <div>
         <div class="sc-lbl">Total Liabilities</div>
         <div class="sc-val" id="d-liab">₹0</div>
         <div class="sc-sub">Total debt</div>
       </div>
-      <div class="sc-cta"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Tap to edit</div>
+      <div class="sc-cta" aria-hidden="true">
+        <svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5h6M5 2l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tap to edit
+      </div>
     </div>
   </div>
-</div>
+</main>
 
-<div id="section-view">
-  <div class="nw-card">
+<!-- SECTION VIEW -->
+<div id="section-view" role="main">
+
+  <!-- Net Worth Bar -->
+  <div class="nw-card" aria-label="Net Worth Summary">
     <div class="nw-top">
       <div>
         <div class="nw-lbl">Net Worth</div>
         <div class="nw-big" id="disp-networth">₹0</div>
       </div>
       <div style="text-align:right">
-        <div class="nw-lbl">Assets : Liabilities</div>
+        <div class="nw-lbl">Assets : Liab</div>
         <div class="nw-ratio" id="nw-ratio">—</div>
       </div>
     </div>
     <div class="bar-row">
-      <div class="bar-scale"><span>0%</span><span>50%</span><span>100%</span></div>
-      <div class="bar-track"><div class="bar-fill" id="nw-bar"><span class="bar-pct" id="nw-pct">0%</span></div></div>
+      <div class="bar-scale" aria-hidden="true"><span>0%</span><span>50%</span><span>100%</span></div>
+      <div class="bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Asset coverage ratio">
+        <div class="bar-fill" id="nw-bar"><span class="bar-pct" id="nw-pct">0%</span></div>
+      </div>
     </div>
-    <div id="nw-status"></div>
+    <div id="nw-status" role="status"></div>
   </div>
 
-  <div class="panel" id="p-0">
-    <div class="panel-hdr"><h2>Income &amp; Deductions</h2><p>All figures are monthly averages in ₹</p></div>
+  <!-- Panel 0: Income -->
+  <div class="panel" id="p-0" role="region" aria-label="Income and Deductions">
+    <div class="panel-hdr">
+      <h2>Income &amp; Deductions</h2>
+      <p>Monthly averages in ₹</p>
+    </div>
     <div class="form-grid">
       <div class="form-section">
         <div class="fs-title">💰 Monthly Income Sources</div>
-        <div class="field"><label>Employment Salary</label><div class="pfx"><input type="number" id="i_salary" placeholder="e.g. 100000" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_salary"></span></div></div>
-        <div class="field"><label>Bonus (avg / month)</label><div class="pfx"><input type="number" id="i_bonus" placeholder="e.g. 10000" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_bonus"></span></div></div>
-        <div class="field"><label>Business / Agriculture</label><div class="pfx"><input type="number" id="i_business" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_business"></span></div></div>
-        <div class="field"><label>Spouse Income</label><div class="pfx"><input type="number" id="i_spouse" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_spouse"></span></div></div>
-        <div class="field"><label>Rent from Property</label><div class="pfx"><input type="number" id="i_rent" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_rent"></span></div></div>
-        <div class="field"><label>Dividends / Royalties</label><div class="pfx"><input type="number" id="i_dividends" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_dividends"></span></div></div>
-        <div class="field"><label>Pension / Annuity</label><div class="pfx"><input type="number" id="i_pension" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_pension"></span></div></div>
-        <div class="subtotal"><span>Gross Monthly Income</span><strong id="sub-gross">₹0</strong></div>
+        <div class="field"><label for="i_salary">Employment Salary</label><div class="pfx"><input type="number" inputmode="numeric" id="i_salary" placeholder="e.g. 100000" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_salary" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_bonus">Bonus (avg / month)</label><div class="pfx"><input type="number" inputmode="numeric" id="i_bonus" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_bonus" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_business">Business / Agriculture</label><div class="pfx"><input type="number" inputmode="numeric" id="i_business" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_business" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_spouse">Spouse Income</label><div class="pfx"><input type="number" inputmode="numeric" id="i_spouse" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_spouse" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_rent">Rent from Property</label><div class="pfx"><input type="number" inputmode="numeric" id="i_rent" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_rent" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_dividends">Dividends / Royalties</label><div class="pfx"><input type="number" inputmode="numeric" id="i_dividends" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_dividends" aria-live="polite"></span></div></div>
+        <div class="field"><label for="i_pension">Pension / Annuity</label><div class="pfx"><input type="number" inputmode="numeric" id="i_pension" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_i_pension" aria-live="polite"></span></div></div>
+        <div class="subtotal hi-blue"><span>Gross Monthly Income</span><strong id="sub-gross">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">➖ Deductions</div>
-        <div class="field"><label>Provident Fund (PF)</label><div class="pfx"><input type="number" id="d_pf" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_pf"></span></div></div>
-        <div class="field"><label>Pension Contribution</label><div class="pfx"><input type="number" id="d_pension" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_pension"></span></div></div>
-        <div class="field"><label>Sec 80C (monthly avg)</label><div class="pfx"><input type="number" id="d_80c" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_80c"></span></div></div>
-        <div class="field"><label>Sec 80D Health Insurance</label><div class="pfx"><input type="number" id="d_80d" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_80d"></span></div></div>
+        <div class="field"><label for="d_pf">Provident Fund (PF)</label><div class="pfx"><input type="number" inputmode="numeric" id="d_pf" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_pf" aria-live="polite"></span></div></div>
+        <div class="field"><label for="d_pension">Pension Contribution</label><div class="pfx"><input type="number" inputmode="numeric" id="d_pension" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_pension" aria-live="polite"></span></div></div>
+        <div class="field"><label for="d_80c">Sec 80C (monthly avg)</label><div class="pfx"><input type="number" inputmode="numeric" id="d_80c" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_80c" aria-live="polite"></span></div></div>
+        <div class="field"><label for="d_80d">Sec 80D Health Insurance</label><div class="pfx"><input type="number" inputmode="numeric" id="d_80d" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_d_80d" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Total Deductions</span><strong id="sub-ded">₹0</strong></div>
-        <div class="subtotal hi-green" style="margin-top:.5rem"><span>✅ Net Monthly Income</span><strong id="sub-net">₹0</strong></div>
+        <div class="subtotal hi-green" style="margin-top:.45rem"><span>✅ Net Monthly Income</span><strong id="sub-net">₹0</strong></div>
       </div>
     </div>
   </div>
 
-  <div class="panel" id="p-1">
-    <div class="panel-hdr"><h2>Monthly Expenses</h2><p>Living costs + EMI repayments</p></div>
+  <!-- Panel 1: Expenses -->
+  <div class="panel" id="p-1" role="region" aria-label="Monthly Expenses">
+    <div class="panel-hdr">
+      <h2>Monthly Expenses</h2>
+      <p>Living costs + EMI repayments</p>
+    </div>
     <div class="form-grid">
       <div class="form-section">
         <div class="fs-title">🛒 Living Expenses</div>
-        <div class="field"><label>Household &amp; Food</label><div class="pfx"><input type="number" id="e_food" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_food"></span></div></div>
-        <div class="field"><label>Clothing &amp; Personal</label><div class="pfx"><input type="number" id="e_clothing" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_clothing"></span></div></div>
-        <div class="field"><label>Rent / Housing</label><div class="pfx"><input type="number" id="e_rent" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_rent"></span></div></div>
-        <div class="field"><label>Utilities &amp; Maintenance</label><div class="pfx"><input type="number" id="e_utilities" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_utilities"></span></div></div>
-        <div class="field"><label>Children Education</label><div class="pfx"><input type="number" id="e_children" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_children"></span></div></div>
-        <div class="field"><label>Health &amp; Medical</label><div class="pfx"><input type="number" id="e_health" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_health"></span></div></div>
-        <div class="field"><label>Transport / Fuel</label><div class="pfx"><input type="number" id="e_transport" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_transport"></span></div></div>
-        <div class="field"><label>Appliances Replacement</label><div class="pfx"><input type="number" id="e_appliances" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_appliances"></span></div></div>
-        <div class="field"><label>Entertainment</label><div class="pfx"><input type="number" id="e_entertainment" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_entertainment"></span></div></div>
-        <div class="field"><label>Travel &amp; Holidays</label><div class="pfx"><input type="number" id="e_travel" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_travel"></span></div></div>
-        <div class="field"><label>Car Insurance &amp; Maintenance</label><div class="pfx"><input type="number" id="e_car_ins" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_car_ins"></span></div></div>
-        <div class="field"><label>Health Insurance Premium</label><div class="pfx"><input type="number" id="e_health_ins" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_health_ins"></span></div></div>
-        <div class="field"><label>Other Expenses</label><div class="pfx"><input type="number" id="e_other" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_other"></span></div></div>
+        <div class="field"><label for="e_food">Household &amp; Food</label><div class="pfx"><input type="number" inputmode="numeric" id="e_food" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_food" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_clothing">Clothing &amp; Personal</label><div class="pfx"><input type="number" inputmode="numeric" id="e_clothing" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_clothing" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_rent">Rent / Housing</label><div class="pfx"><input type="number" inputmode="numeric" id="e_rent" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_rent" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_utilities">Utilities &amp; Maintenance</label><div class="pfx"><input type="number" inputmode="numeric" id="e_utilities" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_utilities" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_children">Children Education</label><div class="pfx"><input type="number" inputmode="numeric" id="e_children" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_children" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_health">Health &amp; Medical</label><div class="pfx"><input type="number" inputmode="numeric" id="e_health" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_health" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_transport">Transport / Fuel</label><div class="pfx"><input type="number" inputmode="numeric" id="e_transport" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_transport" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_appliances">Appliances Replacement</label><div class="pfx"><input type="number" inputmode="numeric" id="e_appliances" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_appliances" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_entertainment">Entertainment</label><div class="pfx"><input type="number" inputmode="numeric" id="e_entertainment" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_entertainment" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_travel">Travel &amp; Holidays</label><div class="pfx"><input type="number" inputmode="numeric" id="e_travel" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_travel" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_car_ins">Car Insurance &amp; Maintenance</label><div class="pfx"><input type="number" inputmode="numeric" id="e_car_ins" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_car_ins" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_health_ins">Health Insurance Premium</label><div class="pfx"><input type="number" inputmode="numeric" id="e_health_ins" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_health_ins" aria-live="polite"></span></div></div>
+        <div class="field"><label for="e_other">Other Expenses</label><div class="pfx"><input type="number" inputmode="numeric" id="e_other" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_e_other" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Expenses Subtotal</span><strong id="sub-exp">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">🏦 EMIs (Monthly)</div>
-        <div class="field"><label>Home Loan EMI 1</label><div class="pfx"><input type="number" id="emi_home1" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_home1"></span></div></div>
-        <div class="field"><label>Home Loan EMI 2</label><div class="pfx"><input type="number" id="emi_home2" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_home2"></span></div></div>
-        <div class="field"><label>Car Loan EMI</label><div class="pfx"><input type="number" id="emi_car" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_car"></span></div></div>
-        <div class="field"><label>Personal Loan EMI</label><div class="pfx"><input type="number" id="emi_personal" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_personal"></span></div></div>
-        <div class="field"><label>Education Loan EMI</label><div class="pfx"><input type="number" id="emi_edu" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_edu"></span></div></div>
-        <div class="field"><label>Other EMI</label><div class="pfx"><input type="number" id="emi_other" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_other"></span></div></div>
+        <div class="field"><label for="emi_home1">Home Loan EMI 1</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_home1" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_home1" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_home2">Home Loan EMI 2</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_home2" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_home2" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_car">Car Loan EMI</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_car" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_car" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_personal">Personal Loan EMI</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_personal" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_personal" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_edu">Education Loan EMI</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_edu" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_edu" aria-live="polite"></span></div></div>
+        <div class="field"><label for="emi_other">Other EMI</label><div class="pfx"><input type="number" inputmode="numeric" id="emi_other" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_emi_other" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>EMIs Subtotal</span><strong id="sub-emi">₹0</strong></div>
-        <div class="subtotal hi-red" style="margin-top:.5rem"><span>🔴 Total Monthly Outflow</span><strong id="sub-total-exp">₹0</strong></div>
+        <div class="subtotal hi-red" style="margin-top:.45rem"><span>🔴 Total Monthly Outflow</span><strong id="sub-total-exp">₹0</strong></div>
       </div>
       <div class="surplus-row">
         <div class="sur-item"><div class="sur-lbl">Net Income</div><div class="sur-val g" id="sur-inc">₹0</div></div>
@@ -417,519 +1254,480 @@ header.visible{display:flex}
     </div>
   </div>
 
-  <div class="panel" id="p-2">
-    <div class="panel-hdr"><h2>Assets</h2><p>Current market value of everything you own</p></div>
+  <!-- Panel 2: Assets -->
+  <div class="panel" id="p-2" role="region" aria-label="Assets">
+    <div class="panel-hdr">
+      <h2>Assets</h2>
+      <p>Current market value of everything you own</p>
+    </div>
     <div class="form-grid">
       <div class="form-section">
         <div class="fs-title">💧 Liquidity</div>
-        <div class="field"><label>Savings &amp; Cash</label><div class="pfx"><input type="number" id="a_savings_cash" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_savings_cash"></span></div></div>
-        <div class="field"><label>Recurring Deposits</label><div class="pfx"><input type="number" id="a_rd" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_rd"></span></div></div>
-        <div class="field"><label>Short-Term Debt Funds</label><div class="pfx"><input type="number" id="a_stdf" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_stdf"></span></div></div>
+        <div class="field"><label for="a_savings_cash">Savings &amp; Cash</label><div class="pfx"><input type="number" inputmode="numeric" id="a_savings_cash" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_savings_cash" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_rd">Recurring Deposits</label><div class="pfx"><input type="number" inputmode="numeric" id="a_rd" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_rd" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_stdf">Short-Term Debt Funds</label><div class="pfx"><input type="number" inputmode="numeric" id="a_stdf" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_stdf" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Liquidity Total</span><strong id="sub-liq">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">🛡️ Safety</div>
-        <div class="field"><label>PPF / EPF</label><div class="pfx"><input type="number" id="a_ppf" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_ppf"></span></div></div>
-        <div class="field"><label>Fixed Deposits</label><div class="pfx"><input type="number" id="a_fd" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_fd"></span></div></div>
-        <div class="field"><label>NSC / RBI Bonds</label><div class="pfx"><input type="number" id="a_nsc" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_nsc"></span></div></div>
-        <div class="field"><label>Life Insurance (Surrender Value)</label><div class="pfx"><input type="number" id="a_li" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_li"></span></div></div>
-        <div class="field"><label>Primary Residence</label><div class="pfx"><input type="number" id="a_primary_home" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_primary_home"></span></div></div>
+        <div class="field"><label for="a_ppf">PPF / EPF</label><div class="pfx"><input type="number" inputmode="numeric" id="a_ppf" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_ppf" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_fd">Fixed Deposits</label><div class="pfx"><input type="number" inputmode="numeric" id="a_fd" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_fd" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_nsc">NSC / RBI Bonds</label><div class="pfx"><input type="number" inputmode="numeric" id="a_nsc" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_nsc" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_li">Life Insurance (Surrender Value)</label><div class="pfx"><input type="number" inputmode="numeric" id="a_li" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_li" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_primary_home">Primary Residence</label><div class="pfx"><input type="number" inputmode="numeric" id="a_primary_home" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_primary_home" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Safety Total</span><strong id="sub-saf">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">📈 Growth</div>
-        <div class="field"><label>Gold / Jewellery</label><div class="pfx"><input type="number" id="a_gold" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_gold"></span></div></div>
-        <div class="field"><label>Stocks</label><div class="pfx"><input type="number" id="a_stocks" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_stocks"></span></div></div>
-        <div class="field"><label>Equity Mutual Funds</label><div class="pfx"><input type="number" id="a_mf" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_mf"></span></div></div>
-        <div class="field"><label>Real Estate (Investment)</label><div class="pfx"><input type="number" id="a_realty" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_realty"></span></div></div>
-        <div class="field"><label>Other Assets</label><div class="pfx"><input type="number" id="a_other" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_other"></span></div></div>
+        <div class="field"><label for="a_gold">Gold / Jewellery</label><div class="pfx"><input type="number" inputmode="numeric" id="a_gold" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_gold" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_stocks">Stocks</label><div class="pfx"><input type="number" inputmode="numeric" id="a_stocks" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_stocks" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_mf">Equity Mutual Funds</label><div class="pfx"><input type="number" inputmode="numeric" id="a_mf" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_mf" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_realty">Real Estate (Investment)</label><div class="pfx"><input type="number" inputmode="numeric" id="a_realty" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_realty" aria-live="polite"></span></div></div>
+        <div class="field"><label for="a_other">Other Assets</label><div class="pfx"><input type="number" inputmode="numeric" id="a_other" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_a_other" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Growth Total</span><strong id="sub-grw">₹0</strong></div>
       </div>
-      <div class="surplus-row">
+      <div class="surplus-row surplus-row-4">
         <div class="sur-item"><div class="sur-lbl">Liquidity</div><div class="sur-val g" id="sur-liq">₹0</div></div>
         <div class="sur-item"><div class="sur-lbl">Safety</div><div class="sur-val b" id="sur-saf">₹0</div></div>
+        <div class="sur-item"><div class="sur-lbl">Growth</div><div class="sur-val g" id="sur-grw">₹0</div></div>
         <div class="sur-item"><div class="sur-lbl">💎 Total Assets</div><div class="sur-val b" id="sur-tot-a">₹0</div></div>
       </div>
     </div>
   </div>
 
-  <div class="panel" id="p-3">
-    <div class="panel-hdr"><h2>Liabilities</h2><p>Outstanding balances and debt</p></div>
+  <!-- Panel 3: Liabilities -->
+  <div class="panel" id="p-3" role="region" aria-label="Liabilities">
+    <div class="panel-hdr">
+      <h2>Liabilities</h2>
+      <p>Outstanding balances and debt</p>
+    </div>
     <div class="form-grid">
       <div class="form-section">
         <div class="fs-title">⚡ Short Term</div>
-        <div class="field"><label>Credit Card Outstanding</label><div class="pfx"><input type="number" id="l_cc" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_cc"></span></div></div>
-        <div class="field"><label>Personal Loans</label><div class="pfx"><input type="number" id="l_personal" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_personal"></span></div></div>
-        <div class="field"><label>Car Loan (&lt; 3 years remaining)</label><div class="pfx"><input type="number" id="l_car_st" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_car_st"></span></div></div>
-        <div class="field"><label>Tax Dues</label><div class="pfx"><input type="number" id="l_tax" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_tax"></span></div></div>
+        <div class="field"><label for="l_cc">Credit Card Outstanding</label><div class="pfx"><input type="number" inputmode="numeric" id="l_cc" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_cc" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_personal">Personal Loans</label><div class="pfx"><input type="number" inputmode="numeric" id="l_personal" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_personal" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_car_st">Car Loan (&lt;3 yr remaining)</label><div class="pfx"><input type="number" inputmode="numeric" id="l_car_st" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_car_st" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_tax">Tax Dues</label><div class="pfx"><input type="number" inputmode="numeric" id="l_tax" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_tax" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Short Term Total</span><strong id="sub-st">₹0</strong></div>
       </div>
       <div class="form-section">
         <div class="fs-title">🏠 Long Term</div>
-        <div class="field"><label>Home Loan Principal</label><div class="pfx"><input type="number" id="l_home" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_home"></span></div></div>
-        <div class="field"><label>Car Loan (&gt; 3 years remaining)</label><div class="pfx"><input type="number" id="l_car_lt" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_car_lt"></span></div></div>
-        <div class="field"><label>Education Loan</label><div class="pfx"><input type="number" id="l_edu_lt" placeholder="0" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_edu_lt"></span></div></div>
+        <div class="field"><label for="l_home">Home Loan Principal</label><div class="pfx"><input type="number" inputmode="numeric" id="l_home" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_home" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_car_lt">Car Loan (&gt;3 yr remaining)</label><div class="pfx"><input type="number" inputmode="numeric" id="l_car_lt" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_car_lt" aria-live="polite"></span></div></div>
+        <div class="field"><label for="l_edu_lt">Education Loan</label><div class="pfx"><input type="number" inputmode="numeric" id="l_edu_lt" placeholder="0" autocomplete="off" oninput="calc()" onblur="updateHint(this)"><span class="readable-hint" id="hint_l_edu_lt" aria-live="polite"></span></div></div>
         <div class="subtotal"><span>Long Term Total</span><strong id="sub-lt">₹0</strong></div>
-        <div class="subtotal hi-red" style="margin-top:.5rem"><span>🔴 Total Liabilities</span><strong id="sub-tot-l">₹0</strong></div>
+        <div class="subtotal hi-red" style="margin-top:.45rem"><span>🔴 Total Liabilities</span><strong id="sub-tot-l">₹0</strong></div>
       </div>
     </div>
     <div class="gen-wrap">
-      <button class="btn-generate" onclick="openSummaryPage()">
+      <button class="btn-generate" onclick="openSummaryPage()" aria-label="Generate Financial Summary Report">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5.5h6M5 10.5h3.5"/></svg>
         Generate Financial Summary
       </button>
     </div>
   </div>
 
-  <div class="section-nav">
-    <button class="nav-btn" id="btn-prev" onclick="navigate(-1)">
-      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Previous
+  <!-- Fixed Bottom Nav -->
+  <nav class="section-nav" id="section-nav" aria-label="Section navigation">
+    <button class="nav-btn" id="btn-prev" onclick="navigate(-1)" aria-label="Previous section">
+      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Prev
     </button>
-    <div class="nav-center">
-      <span class="nav-label">Section</span>
-      <div class="nav-step" id="step-0" onclick="openSection(0)" title="Income">1</div>
-      <div class="nav-step" id="step-1" onclick="openSection(1)" title="Expenses">2</div>
-      <div class="nav-step" id="step-2" onclick="openSection(2)" title="Assets">3</div>
-      <div class="nav-step" id="step-3" onclick="openSection(3)" title="Liabilities">4</div>
+    <div class="nav-center" role="tablist" aria-label="Sections">
+      <div class="nav-step" id="step-0" onclick="openSection(0)" role="tab" tabindex="0" aria-label="Section 1: Income" aria-selected="false" onkeydown="if(event.key==='Enter')openSection(0)">1</div>
+      <div class="nav-step" id="step-1" onclick="openSection(1)" role="tab" tabindex="0" aria-label="Section 2: Expenses" aria-selected="false" onkeydown="if(event.key==='Enter')openSection(1)">2</div>
+      <div class="nav-step" id="step-2" onclick="openSection(2)" role="tab" tabindex="0" aria-label="Section 3: Assets" aria-selected="false" onkeydown="if(event.key==='Enter')openSection(2)">3</div>
+      <div class="nav-step" id="step-3" onclick="openSection(3)" role="tab" tabindex="0" aria-label="Section 4: Liabilities" aria-selected="false" onkeydown="if(event.key==='Enter')openSection(3)">4</div>
     </div>
-    <button class="nav-btn" id="btn-next" onclick="navigate(1)">
+    <button class="nav-btn" id="btn-next" onclick="navigate(1)" aria-label="Next section">
       Next
-      <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg width="12" height="12" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5 2l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-  </div>
+  </nav>
 </div>
 
-<div id="summary-page">
+<!-- SUMMARY PAGE -->
+<div id="summary-page" role="main" aria-label="Financial Health Summary">
   <div class="sum-hero">
     <div class="sum-hero-eyebrow">🩺 Finance Doctor · Financial Health Report</div>
-    <div class="grade-badge" id="grade-badge">—</div>
+    <div class="grade-badge" id="grade-badge" aria-label="Financial health grade">—</div>
     <h1 id="sum-hero-title">Financial Health Summary</h1>
     <p id="sum-hero-sub">Based on your entered figures</p>
   </div>
-
   <div class="sum-page-inner">
-    <div class="metrics-strip" id="metrics-strip"></div>
-    <div class="insight-grid" id="insight-grid"></div>
-
-    <div class="analysis-card">
-      <div class="analysis-card-hdr">💰 Income Breakdown</div>
-      <div style="overflow-x:auto"><table class="sc-table"><thead><tr><th>Item</th><th>Monthly</th><th>Annual</th><th>% of Gross</th></tr></thead><tbody id="tbody-income"></tbody></table></div>
-    </div>
-    <!-- FIX 1: Added <th>Type</th> so the 5th column has a proper header cell -->
-    <div class="analysis-card">
-      <div class="analysis-card-hdr">🛒 Expense Breakdown</div>
-      <div style="overflow-x:auto"><table class="sc-table"><thead><tr><th>Item</th><th>Monthly</th><th>Annual</th><th>% of Net Income</th><th>Type</th></tr></thead><tbody id="tbody-expense"></tbody></table></div>
-    </div>
-    <div class="analysis-card">
-      <div class="analysis-card-hdr">📊 Cash Flow Summary</div>
-      <div style="overflow-x:auto"><table class="sc-table"><thead><tr><th>Metric</th><th>Monthly</th><th>Annual</th><th>Status</th></tr></thead><tbody id="tbody-cashflow"></tbody></table></div>
-    </div>
-    <div class="analysis-card">
-      <div class="analysis-card-hdr">💎 Asset Breakdown</div>
-      <div style="overflow-x:auto"><table class="sc-table"><thead><tr><th>Category</th><th>Value</th><th>% of Total Assets</th><th>Type</th></tr></thead><tbody id="tbody-assets"></tbody></table></div>
-    </div>
-    <div class="analysis-card">
-      <div class="analysis-card-hdr">🏦 Liability Breakdown</div>
-      <div style="overflow-x:auto"><table class="sc-table"><thead><tr><th>Category</th><th>Outstanding</th><th>% of Total Debt</th><th>Type</th></tr></thead><tbody id="tbody-liab"></tbody></table></div>
-    </div>
-    <div class="analysis-card">
-      <div class="analysis-card-hdr">📋 Net Worth Statement</div>
-      <div style="overflow-x:auto"><table class="sc-table"><thead><tr><th>Component</th><th>Value</th><th>Detail</th></tr></thead><tbody id="tbody-networth"></tbody></table></div>
-    </div>
+    <div class="metrics-strip" id="metrics-strip" role="list" aria-label="Key financial metrics"></div>
     <div class="analysis-card">
       <div class="analysis-card-hdr">📐 Financial Ratios &amp; Benchmarks</div>
-      <div style="overflow-x:auto"><table class="sc-table"><thead><tr><th>Ratio / Metric</th><th>Your Value</th><th>Formula</th><th>Benchmark</th><th>Status</th><th>What it means</th></tr></thead><tbody id="tbody-ratios"></tbody></table></div>
+      <div class="sc-table-wrap" role="region" aria-label="Financial ratios table — scroll horizontally to see all columns">
+        <table class="sc-table" aria-label="Financial ratios and benchmarks">
+          <thead>
+            <tr>
+              <th scope="col">Ratio / Metric</th>
+              <th scope="col">Your Value</th>
+              <th scope="col">Formula</th>
+              <th scope="col">Benchmark</th>
+              <th scope="col">Status</th>
+              <th scope="col">What it means</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-ratios"></tbody>
+        </table>
+      </div>
+      <div class="scroll-hint" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Scroll to see all columns
+      </div>
     </div>
-    <div class="analysis-card">
-      <div class="analysis-card-hdr">📅 Annual &amp; Multi-Year Projections</div>
-      <div style="overflow-x:auto"><table class="sc-table"><thead><tr><th>Projection</th><th>1 Year</th><th>3 Years</th><th>5 Years</th><th>10 Years</th></tr></thead><tbody id="tbody-projections"></tbody></table></div>
-    </div>
-
     <div class="sum-footer-note">
-      All calculations are based on data entered locally on this device. Projections assume current surplus is invested at 10% p.a. (Nifty historical avg). For personalised advice, consult a certified financial planner.
+      All calculations are based on data entered locally on this device. For personalised advice, consult a certified financial planner.
     </div>
   </div>
 </div>
 
 <script>
-const SECTION_NAMES=['Income','Expenses','Assets','Liabilities'];
-let currentSection=0;
+/* ─── STATE ─── */
+let currentSection = 0;
 
-function fmt(n){
-  if(isNaN(n)||n===null||n===undefined)return'₹0';
-  const abs=Math.abs(n);
-  const pre=n<0?'<span style="color:var(--red)">−</span>':'';
-  if(abs>=1e7)return pre+'₹'+(abs/1e7).toFixed(2)+' Cr';
-  if(abs>=1e5)return pre+'₹'+(abs/1e5).toFixed(2)+' L';
-  if(abs>=1e3)return pre+'₹'+(abs/1e3).toFixed(1)+' K';
-  return pre+'₹'+Math.round(abs).toLocaleString('en-IN');
+/* ─── FORMATTING ─── */
+function fmt(n) {
+  if (isNaN(n) || n === null || n === undefined) return '₹0';
+  const abs = Math.abs(n);
+  const pre = n < 0 ? '<span style="color:var(--red)">−</span>' : '';
+  if (abs >= 1e7) return pre + '₹' + (abs / 1e7).toFixed(2) + ' Cr';
+  if (abs >= 1e5) return pre + '₹' + (abs / 1e5).toFixed(2) + ' L';
+  if (abs >= 1e3) return pre + '₹' + (abs / 1e3).toFixed(1) + ' K';
+  return pre + '₹' + Math.round(abs).toLocaleString('en-IN');
 }
-function fmtHint(n){
-  if(!n||isNaN(n)||n==0)return'';
-  const abs=Math.abs(n),pre=n<0?'- ':'';
-  if(abs>=1e7)return pre+'₹'+(abs/1e7).toFixed(abs%1e7===0?0:2)+' Crore';
-  if(abs>=1e5)return pre+'₹'+(abs/1e5).toFixed(abs%1e5===0?0:2)+' Lakh';
-  if(abs>=1e3)return pre+'₹'+(abs/1e3).toFixed(abs%1e3===0?0:1)+' Thousand';
-  return pre+'₹'+Math.round(abs).toLocaleString('en-IN');
-}
-function updateHint(input){
-  const val=parseFloat(input.value)||0;
-  const hint=document.getElementById('hint_'+input.id);
-  if(!hint)return;
-  hint.textContent=val>999?'= '+fmtHint(val):'';
-}
-function updateHintLive(input){
-  const val=parseFloat(input.value)||0;
-  const hint=document.getElementById('hint_'+input.id);
-  if(!hint)return;
-  hint.textContent=val>=1000?'= '+fmtHint(val):'';
-}
-function g(id){return parseFloat(document.getElementById(id)?.value)||0;}
-function s(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
 
-function showView(name){
-  document.getElementById('dashboard').style.display=name==='dashboard'?'flex':'none';
-  document.getElementById('section-view').style.display=name==='section'?'block':'none';
-  document.getElementById('summary-page').classList.toggle('visible',name==='summary');
-  document.getElementById('main-header').classList.toggle('visible',name!=='dashboard');
-  const backBtn=document.getElementById('hdr-back-btn');
-  const editBtn=document.getElementById('hdr-edit-btn');
-  if(name==='summary'){backBtn.textContent='← Dashboard';editBtn.style.display='inline-flex';}
-  else{backBtn.textContent='← Dashboard';editBtn.style.display='none';}
+function fmtHint(n) {
+  if (!n || isNaN(n) || n == 0) return '';
+  const abs = Math.abs(n), pre = n < 0 ? '− ' : '';
+  if (abs >= 1e7) return pre + '₹' + (abs / 1e7).toFixed(abs % 1e7 === 0 ? 0 : 2) + ' Crore';
+  if (abs >= 1e5) return pre + '₹' + (abs / 1e5).toFixed(abs % 1e5 === 0 ? 0 : 2) + ' Lakh';
+  if (abs >= 1e3) return pre + '₹' + (abs / 1e3).toFixed(abs % 1e3 === 0 ? 0 : 1) + ' Thousand';
+  return pre + '₹' + Math.round(abs).toLocaleString('en-IN');
 }
-function openSection(idx){
-  currentSection=idx;showView('section');
-  document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('visible',i===idx));
-  document.querySelectorAll('.nav-step').forEach((s,i)=>{s.className='nav-step';if(i===idx)s.classList.add('active-'+idx);});
-  document.getElementById('btn-prev').disabled=(idx===0);
-  document.getElementById('btn-next').disabled=(idx===3);
-  window.scrollTo({top:0,behavior:'smooth'});
+
+function updateHint(input) {
+  const val = parseFloat(input.value) || 0;
+  const hint = document.getElementById('hint_' + input.id);
+  if (!hint) return;
+  const txt = val > 999 ? '= ' + fmtHint(val) : '';
+  hint.textContent = txt;
+  input.closest('.pfx').classList.toggle('has-hint', !!txt);
 }
-function navigate(dir){const next=currentSection+dir;if(next>=0&&next<=3)openSection(next);}
-function handleBack(){if(document.getElementById('summary-page').classList.contains('visible')){backToEdit();}else{backToDash();}}
-function backToDash(){showView('dashboard');window.scrollTo({top:0,behavior:'smooth'});}
-function backToEdit(){openSection(3);}
 
-function calc(){
-  const gross=g('i_salary')+g('i_bonus')+g('i_business')+g('i_spouse')+g('i_rent')+g('i_dividends')+g('i_pension');
-  const ded=g('d_pf')+g('d_pension')+g('d_80c')+g('d_80d');
-  const netInc=gross-ded;
-  const expenses=g('e_food')+g('e_clothing')+g('e_rent')+g('e_utilities')+g('e_children')+g('e_health')+g('e_transport')+g('e_appliances')+g('e_entertainment')+g('e_travel')+g('e_car_ins')+g('e_health_ins')+g('e_other');
-  const emis=g('emi_home1')+g('emi_home2')+g('emi_car')+g('emi_personal')+g('emi_edu')+g('emi_other');
-  const totalExp=expenses+emis;
-  const surplus=netInc-totalExp;
-  const subLiq=g('a_savings_cash')+g('a_rd')+g('a_stdf');
-  const subSaf=g('a_ppf')+g('a_fd')+g('a_nsc')+g('a_li')+g('a_primary_home');
-  const subGrw=g('a_gold')+g('a_stocks')+g('a_mf')+g('a_realty')+g('a_other');
-  const totalAssets=subLiq+subSaf+subGrw;
-  const subST=g('l_cc')+g('l_personal')+g('l_car_st')+g('l_tax');
-  const subLT=g('l_home')+g('l_car_lt')+g('l_edu_lt');
-  const totalLiab=subST+subLT;
-  const netWorth=totalAssets-totalLiab;
-  const savRate=gross?(surplus/gross)*100:0;
-  const totalCap=totalAssets+totalLiab;
-  const pct=totalCap>0?Math.min(100,(totalAssets/totalCap)*100):0;
-  const alRatio=totalLiab?totalAssets/totalLiab:null;
+/* ─── HELPERS ─── */
+function g(id) { return parseFloat(document.getElementById(id)?.value) || 0; }
+function s(id, val) { const el = document.getElementById(id); if (el) el.innerHTML = val; }
 
-  s('sub-gross',fmt(gross));s('sub-ded',fmt(ded));s('sub-net',fmt(netInc));
-  s('sub-exp',fmt(expenses));s('sub-emi',fmt(emis));s('sub-total-exp',fmt(totalExp));
-  s('sur-inc',fmt(netInc));s('sur-exp',fmt(totalExp));s('sur-sur',fmt(surplus));
-  s('sub-liq',fmt(subLiq));s('sub-saf',fmt(subSaf));s('sub-grw',fmt(subGrw));
-  s('sur-liq',fmt(subLiq));s('sur-saf',fmt(subSaf));s('sur-tot-a',fmt(totalAssets));
-  s('sub-st',fmt(subST));s('sub-lt',fmt(subLT));s('sub-tot-l',fmt(totalLiab));
-  s('d-income',fmt(netInc));s('d-expense',fmt(totalExp));
-  s('d-assets',fmt(totalAssets));s('d-liab',fmt(totalLiab));
+/* ─── VIEW MANAGEMENT ─── */
+function showView(name) {
+  document.getElementById('dashboard').style.display = name === 'dashboard' ? 'flex' : 'none';
+  const sv = document.getElementById('section-view');
+  sv.style.display = name === 'section' ? 'block' : 'none';
+  sv.classList.toggle('visible', name === 'section');
+  document.getElementById('summary-page').classList.toggle('visible', name === 'summary');
+  document.getElementById('main-header').classList.toggle('visible', name !== 'dashboard');
+  document.getElementById('section-nav').classList.toggle('show', name === 'section');
+  document.getElementById('hdr-edit-btn').style.display = (name === 'summary') ? 'inline-flex' : 'none';
 
-  const nwEl=document.getElementById('disp-networth');
-  nwEl.textContent=fmt(netWorth);nwEl.className='nw-big '+(netWorth>=0?'pos':'neg');
-  const bar=document.getElementById('nw-bar');const pctTxt=document.getElementById('nw-pct');
-  bar.style.width=pct+'%';pctTxt.textContent=pct.toFixed(0)+'%';pctTxt.style.color=pct<18?'var(--text)':'#fff';
-  s('nw-ratio',alRatio?alRatio.toFixed(2)+'x (assets : liab)':'No liabilities');
-  const st=document.getElementById('nw-status');
-  if(pct>=80){st.textContent='💪 Strong position — low debt relative to assets';st.style.color='var(--green)';}
-  else if(pct>=50){st.textContent='🙂 Balanced — assets roughly cover liabilities';st.style.color='var(--blue)';}
-  else if(pct>0){st.textContent='⚠️ High liabilities compared to assets';st.style.color='var(--amber)';}
-  else{st.textContent='🚨 No assets recorded — start building wealth';st.style.color='var(--red)';}
+  // Update ARIA on main elements
+  document.getElementById('dashboard').setAttribute('aria-hidden', name !== 'dashboard' ? 'true' : 'false');
+}
 
-  window._fd={gross,ded,netInc,expenses,emis,totalExp,surplus,subLiq,subSaf,subGrw,totalAssets,subST,subLT,totalLiab,netWorth,savRate,alRatio,pct};
+function openSection(idx) {
+  currentSection = idx;
+  showView('section');
+  document.querySelectorAll('.panel').forEach((p, i) => p.classList.toggle('visible', i === idx));
+  document.querySelectorAll('.nav-step').forEach((s, i) => {
+    s.className = 'nav-step';
+    s.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+    if (i === idx) s.classList.add('active-' + idx);
+  });
+  document.getElementById('btn-prev').disabled = (idx === 0);
+  document.getElementById('btn-next').disabled = (idx === 3);
+  // Scroll to top smoothly
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function navigate(dir) {
+  const next = currentSection + dir;
+  if (next >= 0 && next <= 3) openSection(next);
+}
+
+function handleBack() {
+  if (document.getElementById('summary-page').classList.contains('visible')) {
+    backToEdit();
+  } else {
+    backToDash();
+  }
+}
+
+function backToDash() {
+  showView('dashboard');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function backToEdit() { openSection(3); }
+
+/* ─── CALCULATIONS ─── */
+function calc() {
+  const gross = g('i_salary') + g('i_bonus') + g('i_business') + g('i_spouse') + g('i_rent') + g('i_dividends') + g('i_pension');
+  const ded = g('d_pf') + g('d_pension') + g('d_80c') + g('d_80d');
+  const netInc = gross - ded;
+  const expenses = g('e_food') + g('e_clothing') + g('e_rent') + g('e_utilities') + g('e_children') + g('e_health') + g('e_transport') + g('e_appliances') + g('e_entertainment') + g('e_travel') + g('e_car_ins') + g('e_health_ins') + g('e_other');
+  const emis = g('emi_home1') + g('emi_home2') + g('emi_car') + g('emi_personal') + g('emi_edu') + g('emi_other');
+  const totalExp = expenses + emis;
+  const surplus = netInc - totalExp;
+  const subLiq = g('a_savings_cash') + g('a_rd') + g('a_stdf');
+  const subSaf = g('a_ppf') + g('a_fd') + g('a_nsc') + g('a_li') + g('a_primary_home');
+  const subGrw = g('a_gold') + g('a_stocks') + g('a_mf') + g('a_realty') + g('a_other');
+  const totalAssets = subLiq + subSaf + subGrw;
+  const subST = g('l_cc') + g('l_personal') + g('l_car_st') + g('l_tax');
+  const subLT = g('l_home') + g('l_car_lt') + g('l_edu_lt');
+  const totalLiab = subST + subLT;
+  const netWorth = totalAssets - totalLiab;
+  const savRate = gross ? (surplus / gross) * 100 : 0;
+  const totalCap = totalAssets + totalLiab;
+  const pct = totalCap > 0 ? Math.min(100, (totalAssets / totalCap) * 100) : 0;
+  const alRatio = totalLiab ? totalAssets / totalLiab : null;
+
+  // Update display
+  s('sub-gross', fmt(gross));
+  s('sub-ded', fmt(ded));
+  s('sub-net', fmt(netInc));
+  s('sub-exp', fmt(expenses));
+  s('sub-emi', fmt(emis));
+  s('sub-total-exp', fmt(totalExp));
+  s('sur-inc', fmt(netInc));
+  s('sur-exp', fmt(totalExp));
+  s('sur-sur', fmt(surplus));
+  s('sub-liq', fmt(subLiq));
+  s('sub-saf', fmt(subSaf));
+  s('sub-grw', fmt(subGrw));
+  s('sur-liq', fmt(subLiq));
+  s('sur-saf', fmt(subSaf));
+  s('sur-grw', fmt(subGrw));
+  s('sur-tot-a', fmt(totalAssets));
+  s('sub-st', fmt(subST));
+  s('sub-lt', fmt(subLT));
+  s('sub-tot-l', fmt(totalLiab));
+  s('d-income', fmt(netInc));
+  s('d-expense', fmt(totalExp));
+  s('d-assets', fmt(totalAssets));
+  s('d-liab', fmt(totalLiab));
+
+  // Net worth display
+  const nwEl = document.getElementById('disp-networth');
+  nwEl.innerHTML = fmt(netWorth);
+  nwEl.className = 'nw-big ' + (netWorth >= 0 ? 'pos' : 'neg');
+
+  // Progress bar
+  const bar = document.getElementById('nw-bar');
+  bar.style.width = pct + '%';
+  bar.setAttribute('aria-valuenow', Math.round(pct));
+  const pctTxt = document.getElementById('nw-pct');
+  pctTxt.textContent = pct.toFixed(0) + '%';
+  pctTxt.style.color = pct < 18 ? 'var(--text)' : '#fff';
+
+  // Net worth status
+  s('nw-ratio', alRatio ? alRatio.toFixed(2) + 'x' : 'No liabilities');
+  const st = document.getElementById('nw-status');
+  if (pct >= 80) {
+    st.textContent = '💪 Strong position — low debt relative to assets';
+    st.style.color = 'var(--green)';
+  } else if (pct >= 50) {
+    st.textContent = '🙂 Balanced — assets roughly cover liabilities';
+    st.style.color = 'var(--blue)';
+  } else if (pct > 0) {
+    st.textContent = '⚠️ High liabilities compared to assets';
+    st.style.color = 'var(--amber)';
+  } else {
+    st.textContent = '🚨 No assets recorded — start building wealth';
+    st.style.color = 'var(--red)';
+  }
+
+  window._fd = { gross, ded, netInc, expenses, emis, totalExp, surplus, subLiq, subSaf, subGrw, totalAssets, subST, subLT, totalLiab, netWorth, savRate, alRatio, pct };
   saveData();
-  document.querySelectorAll('input[type="number"][id]').forEach(inp=>updateHintLive(inp));
+
+  // Update all hints live on input
+  document.querySelectorAll('input[type="number"][id]').forEach(inp => updateHint(inp));
 }
 
-function scoreGrade(d){
-  let pts=0;
-  if(d.surplus>0)pts+=25;
-  if(d.savRate>=20)pts+=25; else if(d.savRate>0)pts+=10;
-  if(d.netWorth>0)pts+=25;
-  if(d.alRatio===null||d.alRatio>=2)pts+=25; else if(d.alRatio>=1)pts+=12;
-  if(pts>=90)return{grade:'A+',color:'#00a878',bg:'rgba(0,168,120,.15)',label:'Excellent financial health'};
-  if(pts>=75)return{grade:'A',color:'#00a878',bg:'rgba(0,168,120,.15)',label:'Very good financial health'};
-  if(pts>=60)return{grade:'B',color:'#5498ff',bg:'rgba(26,95,212,.15)',label:'Good — room to improve'};
-  if(pts>=40)return{grade:'C',color:'#f5a832',bg:'rgba(212,121,10,.15)',label:'Fair — needs attention'};
-  return{grade:'D',color:'#f0607a',bg:'rgba(217,53,80,.15)',label:'Needs urgent action'};
+/* ─── GRADE SCORING ─── */
+function scoreGrade(d) {
+  let pts = 0;
+  if (d.surplus > 0) pts += 25;
+  if (d.savRate >= 20) pts += 25; else if (d.savRate > 0) pts += 10;
+  if (d.netWorth > 0) pts += 25;
+  if (d.alRatio === null || d.alRatio >= 2) pts += 25; else if (d.alRatio >= 1) pts += 12;
+  if (pts >= 90) return { grade: 'A+', color: '#00a878', bg: 'rgba(0,168,120,.15)', label: 'Excellent financial health' };
+  if (pts >= 75) return { grade: 'A', color: '#00a878', bg: 'rgba(0,168,120,.15)', label: 'Very good financial health' };
+  if (pts >= 60) return { grade: 'B', color: '#5498ff', bg: 'rgba(26,95,212,.15)', label: 'Good — room to improve' };
+  if (pts >= 40) return { grade: 'C', color: '#f5a832', bg: 'rgba(212,121,10,.15)', label: 'Fair — needs attention' };
+  return { grade: 'D', color: '#f0607a', bg: 'rgba(217,53,80,.15)', label: 'Needs urgent action' };
 }
 
-function pct(part,whole){return whole?((part/whole)*100).toFixed(1)+'%':'—';}
-function fmtA(n){return n>0?fmt(n):'—';}
-function stClass(s){return s.startsWith('✅')?'st-ok':s.startsWith('⚠')?'st-warn':s.startsWith('🚨')?'st-warn':'st-fill';}
-/* fmtNeg: renders a deduction as "−₹10.0 K" with styled red minus — delegates to fmt() */
-function fmtNeg(n){
-  if(!n||n===0)return fmt(0);
-  return fmt(-Math.abs(n));
+function stClass(s) {
+  return s.startsWith('✅') ? 'st-ok' : s.startsWith('⚠') ? 'st-warn' : s.startsWith('🚨') ? 'st-danger' : 'st-na';
 }
 
-/* trBold: subtotal rows with class="row-bold" — CSS handles background */
-function trBold(label,val,extra=''){
-  return `<tr class="row-bold"><td><strong>${label}</strong></td><td style="white-space:nowrap"><strong style="font-family:'JetBrains Mono',monospace">${val}</strong></td><td colspan="10" style="color:var(--muted);font-size:.79rem;font-family:'JetBrains Mono',monospace;white-space:nowrap">${extra}</td></tr>`;
-}
+/* ─── SUMMARY PAGE ─── */
+function openSummaryPage() {
+  const d = window._fd || {};
+  const grd = scoreGrade(d);
 
-/*
- * FIX 2: trN — every <td> gets an explicit inline background:inherit
- * This prevents the last cell from picking up the thead's blue tint
- * when the table has more columns than the header had <th> elements.
- * Column styling is layered on top via additional inline properties.
- */
-function trN(cols){
-  return '<tr>' + cols.map((c, i) => {
-    let style = 'background:inherit;';
-    if (i === 1) style += "font-weight:600;font-family:'JetBrains Mono',monospace;white-space:nowrap;";
-    else if (i === 2) style += "font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:.79rem;white-space:nowrap;";
-    else if (i > 2) style += 'color:var(--muted);font-size:.79rem;';
-    return `<td style="${style}">${c}</td>`;
-  }).join('') + '</tr>';
-}
+  const gb = document.getElementById('grade-badge');
+  gb.textContent = grd.grade;
+  gb.style.color = grd.color;
+  gb.style.borderColor = grd.color;
+  gb.style.background = grd.bg;
+  gb.setAttribute('aria-label', 'Financial health grade: ' + grd.grade);
 
-function tr5(a,b,c,d,e){return`<tr><td style="background:inherit">${a}</td><td style="background:inherit;font-weight:600;font-family:'JetBrains Mono',monospace">${b}</td><td style="background:inherit;color:var(--muted);font-size:.78rem">${c}</td><td style="background:inherit;color:var(--muted)">${d}</td><td style="background:inherit" class="${stClass(e)}">${e}</td></tr>`;}
-function grow(principal,rate,years){return principal*Math.pow(1+rate,years);}
+  document.getElementById('sum-hero-title').textContent = 'Financial Health Summary';
+  document.getElementById('sum-hero-sub').textContent = grd.label;
 
-function openSummaryPage(){
-  const d=window._fd||{};
-  const grd=scoreGrade(d);
-  const gb=document.getElementById('grade-badge');
-  gb.textContent=grd.grade;gb.style.color=grd.color;gb.style.borderColor=grd.color;gb.style.background=grd.bg;
-  document.getElementById('sum-hero-title').textContent='Financial Health Summary';
-  document.getElementById('sum-hero-sub').textContent=grd.label;
+  const gross = d.gross || 0, netInc = d.netInc || 0, emis = d.emis || 0;
+  const totalExp = d.totalExp || 0, surplus = d.surplus || 0;
+  const subLiq = d.subLiq || 0, subGrw = d.subGrw || 0;
+  const totalAssets = d.totalAssets || 0, totalLiab = d.totalLiab || 0;
+  const netWorth = d.netWorth || 0, savRate = d.savRate || 0;
+  const alRatio = d.alRatio;
 
-  const gross=d.gross||0,ded=d.ded||0,netInc=d.netInc||0;
-  const expenses=d.expenses||0,emis=d.emis||0,totalExp=d.totalExp||0,surplus=d.surplus||0;
-  const subLiq=d.subLiq||0,subSaf=d.subSaf||0,subGrw=d.subGrw||0,totalAssets=d.totalAssets||0;
-  const subST=d.subST||0,subLT=d.subLT||0,totalLiab=d.totalLiab||0;
-  const netWorth=d.netWorth||0,savRate=d.savRate||0,alRatio=d.alRatio;
+  const emiToIncome = netInc > 0 ? ((emis / netInc) * 100) : null;
+  const liquidMonths = totalExp > 0 ? (subLiq / totalExp) : null;
+  const debtRatio = totalAssets > 0 ? (totalLiab / totalAssets) * 100 : null;
+  const investRatio = totalAssets > 0 ? ((subGrw / totalAssets) * 100) : null;
 
-  const salary=g('i_salary'),bonus=g('i_bonus'),business=g('i_business'),spouse=g('i_spouse'),
-        rentInc=g('i_rent'),dividends=g('i_dividends'),pension=g('i_pension');
-  const pf=g('d_pf'),penDed=g('d_pension'),d80c=g('d_80c'),d80d=g('d_80d');
-  const food=g('e_food'),clothing=g('e_clothing'),rentExp=g('e_rent'),utilities=g('e_utilities'),
-        children=g('e_children'),health=g('e_health'),transport=g('e_transport'),
-        appliances=g('e_appliances'),entertainment=g('e_entertainment'),travel=g('e_travel'),
-        carIns=g('e_car_ins'),healthIns=g('e_health_ins'),otherExp=g('e_other');
-  const emiH1=g('emi_home1'),emiH2=g('emi_home2'),emiCar=g('emi_car'),
-        emiPer=g('emi_personal'),emiEdu=g('emi_edu'),emiOth=g('emi_other');
-  const cash=g('a_savings_cash'),rd=g('a_rd'),stdf=g('a_stdf');
-  const ppf=g('a_ppf'),fd=g('a_fd'),nsc=g('a_nsc'),li=g('a_li'),home=g('a_primary_home');
-  const gold=g('a_gold'),stocks=g('a_stocks'),mf=g('a_mf'),realty=g('a_realty'),otherA=g('a_other');
-  const cc=g('l_cc'),lPer=g('l_personal'),carST=g('l_car_st'),tax=g('l_tax');
-  const lHome=g('l_home'),carLT=g('l_car_lt'),eduLT=g('l_edu_lt');
-
-  const debtToIncome=netInc>0?(totalLiab/netInc):null;
-  const emiToIncome=netInc>0?((emis/netInc)*100):null;
-  const liquidMonths=totalExp>0?(subLiq/totalExp):null;
-
-  // Metrics strip
-  const metrics=[
-    {label:'Net Monthly Income',   val:fmt(netInc),   color:'var(--green)'},
-    {label:'Monthly Surplus',      val:fmt(surplus),  color:surplus>=0?'var(--green)':'var(--red)'},
-    {label:'Savings Rate',         val:savRate.toFixed(1)+'%', color:savRate>=20?'var(--green)':'var(--amber)'},
-    {label:'Total Assets',         val:fmt(totalAssets), color:'var(--blue)'},
-    {label:'Total Liabilities',    val:fmt(totalLiab),   color:'var(--amber)'},
-    {label:'Net Worth',            val:fmt(netWorth), color:netWorth>=0?'var(--green)':'var(--red)'},
-    {label:'Asset : Liability',    val:alRatio?alRatio.toFixed(2)+'x':'Debt Free', color:(!alRatio||alRatio>=2)?'var(--green)':'var(--amber)'},
-    {label:'EMI Burden',           val:emiToIncome!==null?emiToIncome.toFixed(1)+'%':'—', color:emiToIncome!==null&&emiToIncome<=40?'var(--green)':'var(--red)'},
-    {label:'Liquid Cover (months)',val:liquidMonths!==null?liquidMonths.toFixed(1)+' mo':'—', color:liquidMonths!==null&&liquidMonths>=3?'var(--green)':'var(--amber)'},
+  const metrics = [
+    { label: 'Net Monthly Income', val: fmt(netInc), color: 'var(--green)' },
+    { label: 'Monthly Surplus', val: fmt(surplus), color: surplus >= 0 ? 'var(--green)' : 'var(--red)' },
+    { label: 'Savings Rate', val: savRate.toFixed(1) + '%', color: savRate >= 20 ? 'var(--green)' : 'var(--amber)' },
+    { label: 'Total Assets', val: fmt(totalAssets), color: 'var(--blue)' },
+    { label: 'Total Liabilities', val: fmt(totalLiab), color: 'var(--amber)' },
+    { label: 'Net Worth', val: fmt(netWorth), color: netWorth >= 0 ? 'var(--green)' : 'var(--red)' },
+    { label: 'Asset : Liability', val: alRatio ? alRatio.toFixed(2) + 'x' : 'Debt Free', color: (!alRatio || alRatio >= 2) ? 'var(--green)' : 'var(--amber)' },
+    { label: 'EMI Burden', val: emiToIncome !== null ? emiToIncome.toFixed(1) + '%' : '—', color: emiToIncome !== null && emiToIncome <= 40 ? 'var(--green)' : 'var(--red)' },
+    { label: 'Liquid Cover (months)', val: liquidMonths !== null ? liquidMonths.toFixed(1) + ' mo' : '—', color: liquidMonths !== null && liquidMonths >= 3 ? 'var(--green)' : 'var(--amber)' },
   ];
-  document.getElementById('metrics-strip').innerHTML=metrics.map(m=>`<div class="metric-cell"><div class="mc-lbl">${m.label}</div><div class="mc-val" style="color:${m.color}">${m.val}</div></div>`).join('');
 
-  // Insight cards
-  const insights=[];
-  insights.push(surplus>0
-    ?{type:'ok',icon:'✅',title:'Positive Cash Flow',body:`You save ${fmt(surplus)}/month (${savRate.toFixed(1)}% of gross). Annual surplus: ${fmt(surplus*12)}.`}
-    :{type:'bad',icon:'🚨',title:'Negative Cash Flow',body:`Spending exceeds income by ${fmt(Math.abs(surplus))}/month. Immediate review needed.`});
-  insights.push(savRate>=20
-    ?{type:'ok',icon:'📈',title:'Strong Savings Rate',body:`${savRate.toFixed(1)}% savings rate — above the 20% benchmark. Well done!`}
-    :savRate>0
-    ?{type:'warn',icon:'⚠️',title:'Low Savings Rate',body:`${savRate.toFixed(1)}% — below the 20% benchmark. Aim to cut ₹${fmt(gross*0.2-surplus)} more.`}
-    :{type:'bad',icon:'⚠️',title:'No Savings Recorded',body:'Enter income and expenses to see your savings rate.'});
-  insights.push(subLiq>=totalExp*3
-    ?{type:'ok',icon:'💧',title:'Emergency Fund OK',body:`${liquidMonths!==null?liquidMonths.toFixed(1)+' months':''} of expenses covered. Target: 3–6 months (${fmt(totalExp*6)}).`}
-    :{type:'warn',icon:'🏦',title:'Build Emergency Fund',body:`Have ${fmt(subLiq)}. Need ${fmt(totalExp*3)} (3 months). Top up by ${fmt(Math.max(0,totalExp*3-subLiq))}.`});
-  insights.push(netWorth>0
-    ?{type:'ok',icon:'💎',title:'Positive Net Worth',body:`Net worth: ${fmt(netWorth)}. Assets cover liabilities ${alRatio?alRatio.toFixed(1)+'x':'—'}.`}
-    :{type:'bad',icon:'📉',title:'Negative Net Worth',body:`Liabilities exceed assets by ${fmt(Math.abs(netWorth))}. Prioritise debt reduction.`});
-  if(emiToIncome!==null){
-    insights.push(emiToIncome<=40
-      ?{type:'ok',icon:'🏦',title:'EMI Load Manageable',body:`EMIs are ${emiToIncome.toFixed(1)}% of net income — within the 40% safe limit.`}
-      :{type:'bad',icon:'🚨',title:'High EMI Burden',body:`EMIs at ${emiToIncome.toFixed(1)}% of net income — above the 40% danger line. Avoid new loans.`});
-  }
-  if(surplus>0){
-    const corpus10=grow(netWorth>0?netWorth:0,0.10,10)+grow(surplus*12,0.10,10)/0.10*(Math.pow(1.10,10)-1);
-    insights.push({type:'ok',icon:'🚀',title:'10-Year Wealth Estimate',body:`If you invest your surplus at 10% p.a., projected wealth in 10 years: ${fmt(corpus10)}.`});
-  }
-  document.getElementById('insight-grid').innerHTML=insights.map(ins=>`<div class="insight-card ${ins.type}"><div class="ins-icon">${ins.icon}</div><div class="ins-title">${ins.title}</div><div class="ins-body">${ins.body}</div></div>`).join('');
+  document.getElementById('metrics-strip').innerHTML = metrics.map(m =>
+    `<div class="metric-cell" role="listitem"><div class="mc-lbl">${m.label}</div><div class="mc-val" style="color:${m.color}">${m.val}</div></div>`
+  ).join('');
 
-  // Income table
-  const incRows=[
-    ['Employment Salary',salary,gross],['Bonus (avg/month)',bonus,gross],['Business / Agri',business,gross],
-    ['Spouse Income',spouse,gross],['Rental Income',rentInc,gross],['Dividends/Royalties',dividends,gross],['Pension / Annuity',pension,gross],
-  ].filter(r=>r[1]>0).map(r=>trN([r[0],fmt(r[1]),fmt(r[1]*12),pct(r[1],r[2])]));
-  incRows.push(trBold('Gross Income',fmt(gross),fmt(gross*12)+' / year'));
-  const dedRows=[
-    ['Provident Fund (PF)',pf,gross],['Pension Contribution',penDed,gross],
-    ['Sec 80C (avg/month)',d80c,gross],['Sec 80D Health Ins',d80d,gross],
-  ].filter(r=>r[1]>0).map(r=>trN([r[0],fmtNeg(r[1]),fmtNeg(r[1]*12),pct(r[1],r[2])]));
-  if(ded>0)dedRows.push(trBold('Total Deductions',fmtNeg(ded),fmtNeg(ded*12)+' / year'));
-  incRows.push(...dedRows);
-  incRows.push(trBold('✅ Net Take-Home Income',fmt(netInc),fmt(netInc*12)+' / year'));
-  document.getElementById('tbody-income').innerHTML=incRows.join('');
+  const ratioRows = [
+    ['Savings Rate', (savRate < 0 ? '<span style="color:var(--red)">−</span>' : '') + Math.abs(savRate).toFixed(1) + '%', 'Monthly Surplus ÷ Gross Income × 100', '≥ 20%', savRate >= 20 ? '✅ On track' : savRate > 0 ? '⚠ Below 20%' : '🚨 Not saving', 'Core wealth-building metric'],
+    ['EMI-to-Income Ratio', emiToIncome !== null ? emiToIncome.toFixed(1) + '%' : '—', 'Total EMIs ÷ Net Income × 100', '≤ 40%', emiToIncome === null ? '—' : emiToIncome <= 40 ? '✅ Safe' : '🚨 Danger zone', 'High EMI = financial stress'],
+    ['Asset-to-Liability', alRatio ? alRatio.toFixed(2) + 'x' : 'Debt Free', 'Total Assets ÷ Total Liabilities', '≥ 2x', alRatio === null ? '✅ No debt' : alRatio >= 2 ? '✅ Healthy' : alRatio >= 1 ? '⚠ Moderate' : '🚨 High risk', 'Solvency strength'],
+    ['Debt Ratio', debtRatio !== null ? debtRatio.toFixed(1) + '%' : '—', 'Total Liabilities ÷ Total Assets × 100', '< 50%', debtRatio === null ? '—' : debtRatio < 50 ? '✅ Healthy' : debtRatio < 70 ? '⚠ Moderate' : '🚨 Risky', 'Lower = stronger balance sheet'],
+    ['Emergency Fund', liquidMonths !== null ? liquidMonths.toFixed(1) + ' months' : '—', 'Liquid Assets ÷ Monthly Expenses', '3–6 months', liquidMonths === null ? '—' : liquidMonths >= 6 ? '✅ Excellent' : liquidMonths >= 3 ? '✅ Adequate' : '⚠ Build fund', 'Safety net buffer'],
+    ['Investment Ratio', investRatio !== null ? investRatio.toFixed(1) + '%' : '—', 'Growth Assets ÷ Total Assets × 100', '≥ 40%', investRatio === null ? '—' : investRatio >= 40 ? '✅ Growth-focused' : investRatio >= 20 ? '⚠ Moderate' : '🚨 Low exposure', 'Higher = wealth grows faster'],
+  ].map(r => `<tr>
+    <td>${r[0]}</td>
+    <td style="font-weight:600;font-family:'JetBrains Mono',monospace">${r[1]}</td>
+    <td style="color:var(--muted);font-size:.73rem">${r[2]}</td>
+    <td style="color:var(--muted)">${r[3]}</td>
+    <td class="${stClass(r[4])}">${r[4]}</td>
+    <td style="color:var(--muted);font-size:.73rem">${r[5]}</td>
+  </tr>`);
 
-  // Expense table — 5 columns matching the fixed header
-  const expItems=[
-    ['Household & Food',food,'Living'],['Clothing & Personal',clothing,'Living'],['Rent / Housing',rentExp,'Living'],
-    ['Utilities & Maint.',utilities,'Living'],['Children Education',children,'Living'],['Health & Medical',health,'Living'],
-    ['Transport / Fuel',transport,'Living'],['Appliances',appliances,'Living'],['Entertainment',entertainment,'Discretionary'],
-    ['Travel & Holidays',travel,'Discretionary'],['Car Insurance & Maint.',carIns,'Insurance'],['Health Insurance',healthIns,'Insurance'],
-    ['Other Expenses',otherExp,'Other'],['Home Loan EMI 1',emiH1,'EMI'],['Home Loan EMI 2',emiH2,'EMI'],
-    ['Car Loan EMI',emiCar,'EMI'],['Personal Loan EMI',emiPer,'EMI'],['Education Loan EMI',emiEdu,'EMI'],['Other EMI',emiOth,'EMI'],
-  ].filter(r=>r[1]>0);
-  const expRows=expItems.map(r=>trN([r[0],fmt(r[1]),fmt(r[1]*12),pct(r[1],netInc||1),r[2]]));
-  expRows.push(trBold('Living Expenses',fmt(expenses),fmt(expenses*12)+' / year'));
-  expRows.push(trBold('EMIs Total',fmt(emis),fmt(emis*12)+' / year'));
-  expRows.push(trBold('🔴 Total Outflow',fmt(totalExp),fmt(totalExp*12)+' / year'));
-  document.getElementById('tbody-expense').innerHTML=expRows.join('');
-
-  // Cash flow table
-  const cfRows=[
-    ['Gross Income',fmt(gross),fmt(gross*12),'—'],
-    ['Total Deductions',fmtNeg(ded),fmtNeg(ded*12),'—'],
-    ['Net Income',fmt(netInc),fmt(netInc*12),netInc>0?'✅ Positive':'⚠ Zero'],
-    ['Living Expenses',fmtNeg(expenses),fmtNeg(expenses*12),pct(expenses,netInc||1)+' of net'],
-    ['EMIs',fmtNeg(emis),fmtNeg(emis*12),pct(emis,netInc||1)+' of net'],
-    ['Total Outflow',fmtNeg(totalExp),fmtNeg(totalExp*12),pct(totalExp,netInc||1)+' of net'],
-    ['Monthly Surplus / Deficit',fmt(surplus),fmt(surplus*12),surplus>0?'✅ Surplus':'🚨 Deficit'],
-    ['Savings Rate (of gross)',(savRate<0?'<span style="color:var(--red)">−</span>':'')+Math.abs(savRate).toFixed(1)+'%','—',savRate>=20?'✅ ≥20%':savRate>0?'⚠ <20%':'🚨 0%'],
-    ['EMI-to-Net Income',emiToIncome!==null?emiToIncome.toFixed(1)+'%':'—','—',emiToIncome!==null?emiToIncome<=40?'✅ ≤40%':'🚨 >40%':'—'],
-  ].map(r=>trN(r));
-  document.getElementById('tbody-cashflow').innerHTML=cfRows.join('');
-
-  // Assets table
-  const assetItems=[
-    ['Savings & Cash',cash,subLiq,'Liquidity'],['Recurring Deposits',rd,subLiq,'Liquidity'],['Short-Term Debt Funds',stdf,subLiq,'Liquidity'],
-    ['PPF / EPF',ppf,subSaf,'Safety'],['Fixed Deposits',fd,subSaf,'Safety'],['NSC / RBI Bonds',nsc,subSaf,'Safety'],
-    ['Life Insurance (SV)',li,subSaf,'Safety'],['Primary Residence',home,subSaf,'Safety'],
-    ['Gold / Jewellery',gold,subGrw,'Growth'],['Stocks',stocks,subGrw,'Growth'],['Equity Mutual Funds',mf,subGrw,'Growth'],
-    ['Real Estate (Inv.)',realty,subGrw,'Growth'],['Other Assets',otherA,subGrw,'Growth'],
-  ].filter(r=>r[1]>0);
-  const aRows=assetItems.map(r=>trN([r[0],fmt(r[1]),pct(r[1],totalAssets),r[3]]));
-  if(subLiq>0)aRows.push(trBold('Liquidity Sub-total',fmt(subLiq),pct(subLiq,totalAssets)+' of assets'));
-  if(subSaf>0)aRows.push(trBold('Safety Sub-total',fmt(subSaf),pct(subSaf,totalAssets)+' of assets'));
-  if(subGrw>0)aRows.push(trBold('Growth Sub-total',fmt(subGrw),pct(subGrw,totalAssets)+' of assets'));
-  aRows.push(trBold('💎 Total Assets',fmt(totalAssets),''));
-  document.getElementById('tbody-assets').innerHTML=aRows.join('');
-
-  // Liabilities table
-  const liabItems=[
-    ['Credit Card Outstanding',cc,subST,'Short Term'],['Personal Loans',lPer,subST,'Short Term'],
-    ['Car Loan (<3 yr left)',carST,subST,'Short Term'],['Tax Dues',tax,subST,'Short Term'],
-    ['Home Loan Principal',lHome,subLT,'Long Term'],['Car Loan (>3 yr left)',carLT,subLT,'Long Term'],['Education Loan',eduLT,subLT,'Long Term'],
-  ].filter(r=>r[1]>0);
-  const lRows=liabItems.map(r=>trN([r[0],fmt(r[1]),pct(r[1],totalLiab),r[3]]));
-  if(subST>0)lRows.push(trBold('Short Term Sub-total',fmt(subST),pct(subST,totalLiab)+' of debt'));
-  if(subLT>0)lRows.push(trBold('Long Term Sub-total',fmt(subLT),pct(subLT,totalLiab)+' of debt'));
-  lRows.push(trBold('🔴 Total Liabilities',fmt(totalLiab),''));
-  document.getElementById('tbody-liab').innerHTML=lRows.join('');
-
-  // Net worth statement
-  const nwRows=[
-    trN(['(A) Total Assets',fmt(totalAssets),'Sum of all owned wealth']),
-    trN(['(B) Total Liabilities',fmt(totalLiab),'Sum of all outstanding debt']),
-    trBold('Net Worth  (A − B)',fmt(netWorth),netWorth>=0?'✅ Positive — you own more than you owe':'🚨 Negative — debt exceeds assets'),
-    trN(['Liquidity Portion',fmt(subLiq),pct(subLiq,totalAssets)+' of total assets']),
-    trN(['Safety Portion',fmt(subSaf),pct(subSaf,totalAssets)+' of total assets']),
-    trN(['Growth Portion',fmt(subGrw),pct(subGrw,totalAssets)+' of total assets']),
-    trN(['Short-Term Debt',fmt(subST),pct(subST,totalLiab)+' of total liabilities']),
-    trN(['Long-Term Debt',fmt(subLT),pct(subLT,totalLiab)+' of total liabilities']),
-    trN(['Annual Surplus (projected)',fmt(surplus*12),surplus>=0?'At current cash flow':'⚠ Currently in deficit']),
-  ];
-  document.getElementById('tbody-networth').innerHTML=nwRows.join('');
-
-  // Ratios table
-  const solvency=totalAssets>0?(netWorth/totalAssets)*100:null;
-  const debtRatio=totalAssets>0?(totalLiab/totalAssets)*100:null;
-  const fixedCostRatio=netInc>0?((totalExp/netInc)*100):null;
-  const investRatio=totalAssets>0?((subGrw/totalAssets)*100):null;
-  const ratioRows=[
-    ['Savings Rate',(savRate<0?'<span style="color:var(--red)">−</span>':'')+Math.abs(savRate).toFixed(1)+'%','Monthly Surplus ÷ Gross Income × 100','≥ 20%',savRate>=20?'✅ On track':savRate>0?'⚠ Below 20%':'🚨 Not saving','Core wealth-building metric'],
-    ['EMI-to-Income Ratio',emiToIncome!==null?emiToIncome.toFixed(1)+'%':'—','Total EMIs ÷ Net Income × 100','≤ 40%',emiToIncome===null?'—':emiToIncome<=40?'✅ Safe':'🚨 Danger zone','High EMI = financial stress'],
-    ['Asset-to-Liability',alRatio?alRatio.toFixed(2)+'x':'Debt Free','Total Assets ÷ Total Liabilities','≥ 2x',alRatio===null?'✅ No debt':alRatio>=2?'✅ Healthy':alRatio>=1?'⚠ Moderate':'🚨 High risk','Solvency strength'],
-    ['Debt Ratio',debtRatio!==null?debtRatio.toFixed(1)+'%':'—','Total Liabilities ÷ Total Assets × 100','< 50%',debtRatio===null?'—':debtRatio<50?'✅ Healthy':debtRatio<70?'⚠ Moderate':'🚨 Risky','Lower = stronger balance sheet'],
-    ['Solvency Ratio',solvency!==null?(solvency<0?'<span style="color:var(--red)">−</span>':'')+Math.abs(solvency).toFixed(1)+'%':'—','Net Worth ÷ Total Assets × 100','> 50%',solvency===null?'—':solvency>50?'✅ Strong':solvency>0?'⚠ Moderate':'🚨 Insolvent','% of assets you truly own'],
-    ['Emergency Fund',liquidMonths!==null?liquidMonths.toFixed(1)+' months':'—','Liquid Assets ÷ Monthly Expenses','3–6 months',liquidMonths===null?'—':liquidMonths>=6?'✅ Excellent':liquidMonths>=3?'✅ Adequate':'⚠ Build fund','Safety net buffer'],
-    ['Fixed Cost Ratio',fixedCostRatio!==null?fixedCostRatio.toFixed(1)+'%':'—','Total Expenses ÷ Net Income × 100','< 75%',fixedCostRatio===null?'—':fixedCostRatio<75?'✅ Good':fixedCostRatio<90?'⚠ Tight':'🚨 Overspending','Lower = more breathing room'],
-    ['Investment Ratio',investRatio!==null?investRatio.toFixed(1)+'%':'—','Growth Assets ÷ Total Assets × 100','≥ 40%',investRatio===null?'—':investRatio>=40?'✅ Growth-focused':investRatio>=20?'⚠ Moderate':'🚨 Low exposure','Higher = wealth grows faster'],
-    ['Debt-to-Annual Income',netInc>0?(totalLiab/(netInc*12)).toFixed(2)+'x':'—','Total Liabilities ÷ Annual Net Income','< 3x',netInc>0&&totalLiab/(netInc*12)<3?'✅ Manageable':netInc>0&&totalLiab/(netInc*12)<5?'⚠ Watch':'🚨 High','How many years income to repay all debt'],
-    ['Net Worth-to-Income',netInc>0?(netWorth<0?'<span style="color:var(--red)">−</span>':'')+Math.abs(netInc>0?(netWorth/(netInc*12)):0).toFixed(2)+'x':'—','Net Worth ÷ Annual Net Income','Age÷10 rule','—','E.g. age 35 → target 3.5x annual income'],
-  ].map(r=>`<tr><td style="background:inherit">${r[0]}</td><td style="background:inherit;font-weight:600;font-family:'JetBrains Mono',monospace">${r[1]}</td><td style="background:inherit;color:var(--muted);font-size:.75rem">${r[2]}</td><td style="background:inherit;color:var(--muted)">${r[3]}</td><td style="background:inherit" class="${stClass(r[4])}">${r[4]}</td><td style="background:inherit;color:var(--muted);font-size:.76rem">${r[5]}</td></tr>`);
-  document.getElementById('tbody-ratios').innerHTML=ratioRows.join('');
-
-  // Projections table
-  const r=0.10,baseNW=Math.max(0,netWorth);
-  const proj=(y)=>{const nwGrown=grow(baseNW,r,y);const sipGrown=surplus>0?surplus*12*((Math.pow(1+r,y)-1)/r):0;return fmt(nwGrown+sipGrown);};
-  const projDebt=(y)=>totalLiab>0?fmt(Math.max(0,totalLiab-emis*12*y)):'Debt Free';
-  const annualSavings=surplus*12;
-  const projSavings=(y)=>surplus>0?fmt(annualSavings*y):'—';
-  const projRows=[
-    ['Net Worth (10% growth)',proj(1),proj(3),proj(5),proj(10)],
-    ['Debt Remaining (if EMIs continue)',projDebt(1),projDebt(3),projDebt(5),projDebt(10)],
-    ['Cumulative Surplus Saved',projSavings(1),projSavings(3),projSavings(5),projSavings(10)],
-    ['Annual Passive Income (4% rule)',fmt(baseNW*0.04),fmt(grow(baseNW,r,3)*0.04),fmt(grow(baseNW,r,5)*0.04),fmt(grow(baseNW,r,10)*0.04)],
-    ['Investable Corpus (SIP at 10%)',surplus>0?fmt(surplus*12*(Math.pow(1.10,1)-1)/r):'—',surplus>0?fmt(surplus*12*(Math.pow(1.10,3)-1)/r):'—',surplus>0?fmt(surplus*12*(Math.pow(1.10,5)-1)/r):'—',surplus>0?fmt(surplus*12*(Math.pow(1.10,10)-1)/r):'—'],
-  ].map(r=>`<tr><td style="background:inherit">${r[0]}</td>${r.slice(1).map(v=>`<td style="background:inherit;font-family:'JetBrains Mono',monospace;font-size:.83rem">${v}</td>`).join('')}</tr>`);
-  document.getElementById('tbody-projections').innerHTML=projRows.join('');
-
+  document.getElementById('tbody-ratios').innerHTML = ratioRows.join('');
   showView('summary');
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function saveData(){
-  try{const data={};document.querySelectorAll('input[id]').forEach(el=>{data[el.id]=el.value;});localStorage.setItem('fd_v3',JSON.stringify(data));}catch(e){}
+/* ─── PERSISTENCE ─── */
+function saveData() {
+  try {
+    const data = {};
+    document.querySelectorAll('input[id]').forEach(el => { data[el.id] = el.value; });
+    localStorage.setItem('fd_v3', JSON.stringify(data));
+  } catch (e) { /* localStorage may be unavailable in private mode */ }
 }
-function loadData(){
-  try{
-    const raw=localStorage.getItem('fd_v3');
-    if(raw){
-      const data=JSON.parse(raw);
-      Object.keys(data).forEach(id=>{const el=document.getElementById(id);if(el)el.value=data[id];});
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem('fd_v3');
+    if (raw) {
+      const data = JSON.parse(raw);
+      Object.keys(data).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = data[id];
+      });
       calc();
-      document.querySelectorAll('input[type="number"][id]').forEach(inp=>updateHint(inp));
     }
-  }catch(e){}
+  } catch (e) {}
 }
-function clearAll(){
-  if(confirm('Delete all local data and reset the scorecard?')){
-    localStorage.removeItem('fd_v3');
-    document.querySelectorAll('input[id]').forEach(el=>el.value='');
-    document.querySelectorAll('.readable-hint').forEach(h=>h.textContent='');
-    calc();backToDash();
+
+function clearAll() {
+  if (confirm('Delete all local data and reset the scorecard?')) {
+    try { localStorage.removeItem('fd_v3'); } catch (e) {}
+    document.querySelectorAll('input[id]').forEach(el => el.value = '');
+    document.querySelectorAll('.readable-hint').forEach(h => {
+      h.textContent = '';
+      h.closest('.pfx').classList.remove('has-hint');
+    });
+    calc();
+    backToDash();
   }
 }
-function closeTrust(){
-  document.getElementById('trust-modal').style.display='none';
-  localStorage.setItem('fd_trust_v3','1');
+
+function closeTrust() {
+  document.getElementById('trust-modal').style.display = 'none';
+  try { localStorage.setItem('fd_trust_v3', '1'); } catch (e) {}
+  // Focus on first interactive element after modal closes
+  setTimeout(() => {
+    const firstCard = document.querySelector('.score-card');
+    if (firstCard) firstCard.focus();
+  }, 100);
 }
-window.addEventListener('DOMContentLoaded',()=>{
-  if(localStorage.getItem('fd_trust_v3')==='1'){document.getElementById('trust-modal').style.display='none';}
+
+/* ─── SWIPE TO DISMISS TRUST MODAL ON MOBILE ─── */
+(function() {
+  let startY = 0, isDragging = false;
+  const card = document.querySelector('.trust-card');
+  if (!card) return;
+
+  card.addEventListener('touchstart', e => {
+    startY = e.touches[0].clientY;
+    isDragging = true;
+  }, { passive: true });
+
+  card.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 0) card.style.transform = `translateY(${dy}px)`;
+  }, { passive: true });
+
+  card.addEventListener('touchend', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (dy > 80) {
+      closeTrust();
+    } else {
+      card.style.transform = '';
+    }
+  }, { passive: true });
+})();
+
+/* ─── KEYBOARD SHORTCUT ─── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('trust-modal').style.display !== 'none') {
+    closeTrust();
+  }
+});
+
+/* ─── INIT ─── */
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    if (localStorage.getItem('fd_trust_v3') === '1') {
+      document.getElementById('trust-modal').style.display = 'none';
+    }
+  } catch (e) {}
   loadData();
-  window._fd=window._fd||{};
+  window._fd = window._fd || {};
 });
 </script>
 </body>
