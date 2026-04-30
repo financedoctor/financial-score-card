@@ -73,22 +73,77 @@ body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text
 .btn-trust:active { transform: scale(.97); opacity: .9; }
 
 /* ─── HEADER ─── */
-header { display: none; padding: .5rem .75rem; padding-left: max(.75rem, env(safe-area-inset-left, 0px)); padding-right: max(.75rem, env(safe-area-inset-right, 0px)); align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: rgba(255,255,255,.97); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 100; gap: .4rem; min-height: 54px; }
+header {
+  display: none;
+  padding: 0 .5rem;
+  padding-left: max(.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(.5rem, env(safe-area-inset-right, 0px));
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,.97);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  gap: .3rem;
+  min-height: 52px;
+}
 header.visible { display: flex; }
-.hdr-left { display: flex; align-items: center; gap: .4rem; flex: 1; min-width: 0; overflow: hidden; }
-.hdr-right { display: flex; align-items: center; gap: .3rem; flex-shrink: 0; }
-.fd-logo-sm { display: inline-flex; flex-direction: column; align-items: center; background: var(--fd-sky); border-radius: 8px; padding: .22rem .55rem .18rem; line-height: 1; box-shadow: 0 2px 8px rgba(91,200,232,.3); cursor: pointer; flex-shrink: 0; min-height: 36px; }
-.fd-logo-sm .fd-main-sm { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .65rem; color: #fff; letter-spacing: .06em; text-transform: uppercase; line-height: 1.15; }
-.fd-logo-sm .fd-estd-sm { font-size: .4rem; color: rgba(255,255,255,.8); letter-spacing: .07em; margin-top: .08rem; }
-.offline-pill { display: flex; align-items: center; gap: .3rem; background: var(--green-light); border: 1px solid var(--green-border); border-radius: 20px; padding: .22rem .55rem; font-size: 10px; font-weight: 600; color: var(--green); white-space: nowrap; flex-shrink: 0; }
+
+.hdr-left { display: flex; align-items: center; gap: .3rem; flex-shrink: 0; }
+.hdr-right { display: flex; align-items: center; gap: .25rem; flex: 1; justify-content: flex-end; flex-wrap: nowrap; min-width: 0; overflow: hidden; }
+
+.fd-logo-sm { display: inline-flex; flex-direction: column; align-items: center; background: var(--fd-sky); border-radius: 8px; padding: .22rem .5rem .18rem; line-height: 1; box-shadow: 0 2px 8px rgba(91,200,232,.3); cursor: pointer; flex-shrink: 0; min-height: 36px; }
+.fd-logo-sm .fd-main-sm { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .6rem; color: #fff; letter-spacing: .06em; text-transform: uppercase; line-height: 1.15; }
+.fd-logo-sm .fd-estd-sm { font-size: .38rem; color: rgba(255,255,255,.8); letter-spacing: .07em; margin-top: .08rem; }
+
+.offline-pill { display: flex; align-items: center; gap: .3rem; background: var(--green-light); border: 1px solid var(--green-border); border-radius: 20px; padding: .22rem .45rem; font-size: 10px; font-weight: 600; color: var(--green); white-space: nowrap; flex-shrink: 0; }
 .pill-text { display: none; }
-@media (min-width: 420px) { .pill-text { display: inline; } }
+@media (min-width: 480px) { .pill-text { display: inline; } }
 .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; flex-shrink: 0; }
 @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
-.hbtn { background: transparent; border: 1px solid var(--border2); color: var(--muted); font-family: 'Syne', sans-serif; font-size: var(--fs-xs); font-weight: 600; padding: 0 .6rem; border-radius: 8px; cursor: pointer; transition: var(--tr); display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; min-height: 40px; flex-shrink: 0; }
+
+/* ─── HEADER BUTTONS — MOBILE FIRST ─── */
+.hbtn {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--muted);
+  font-family: 'Syne', sans-serif;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--tr);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  /* Mobile: icon-only squares */
+  min-height: 36px;
+  min-width: 36px;
+  padding: 0;
+}
 .hbtn:active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
-.hbtn.hbtn-print { display: none; }
-@media (min-width: 560px) { .hbtn.hbtn-print { display: inline-flex; } }
+
+/* Show text labels on wider screens */
+@media (min-width: 400px) {
+  .hbtn { padding: 0 .55rem; min-width: auto; font-size: var(--fs-xs); }
+}
+@media (min-width: 500px) {
+  .hbtn { padding: 0 .7rem; font-size: var(--fs-sm); }
+}
+
+/* Hide button text on very small screens, show icon only */
+.hbtn-text { display: none; }
+@media (min-width: 360px) { .hbtn-text { display: inline; } }
+
+/* Print button — always visible now */
+.hbtn-print { display: inline-flex !important; }
+
 .hbtn-back { background: transparent; border-color: var(--border2); color: var(--muted); }
 .hbtn-back:active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
 .hbtn-summary { background: linear-gradient(135deg, var(--blue), #1e7cff); border-color: transparent; color: #fff; font-weight: 700; letter-spacing: .03em; box-shadow: 0 2px 10px rgba(26,95,212,.3); }
@@ -97,6 +152,9 @@ header.visible { display: flex; }
 .hbtn-edit { background: transparent; border-color: var(--border2); color: var(--muted); }
 .hbtn-reset { background: var(--red-light); border-color: var(--red-border); color: var(--red); font-weight: 700; }
 .hbtn-reset:active { background: rgba(217,53,80,.18); border-color: var(--red); color: var(--red); }
+
+/* Print & Reset icon SVGs */
+.btn-icon { width: 14px; height: 14px; flex-shrink: 0; }
 
 /* ─── DASHBOARD ─── */
 #dashboard { width: 100%; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: max(2rem, calc(env(safe-area-inset-top, 0px) + 1.5rem)) 1rem calc(2rem + env(safe-area-inset-bottom, 0px)); gap: 1.5rem; }
@@ -209,7 +267,6 @@ header.visible { display: flex; }
 }
 .section-nav.show { display: flex; }
 
-/* Frosted glass backdrop */
 .snav-inner {
   pointer-events: all;
   margin: 0 .5rem .45rem;
@@ -218,31 +275,18 @@ header.visible { display: flex; }
   backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid rgba(255,255,255,.7);
   border-radius: 18px;
-  box-shadow:
-    0 8px 32px rgba(11,24,41,.12),
-    0 2px 8px rgba(11,24,41,.06),
-    inset 0 1px 0 rgba(255,255,255,.9);
+  box-shadow: 0 8px 32px rgba(11,24,41,.12), 0 2px 8px rgba(11,24,41,.06), inset 0 1px 0 rgba(255,255,255,.9);
   display: flex;
   align-items: center;
   gap: 0;
   padding: .35rem .4rem;
   position: relative;
   overflow: hidden;
-  /* KEY FIX: prevent overflow on small screens */
   width: calc(100% - 1rem);
   min-width: 0;
 }
+.snav-inner::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.9) 40%, rgba(255,255,255,.9) 60%, transparent); border-radius: 1px; }
 
-.snav-inner::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 10%; right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.9) 40%, rgba(255,255,255,.9) 60%, transparent);
-  border-radius: 1px;
-}
-
-/* ── Arrow Buttons — compact on mobile ── */
 .nav-btn {
   display: flex; align-items: center; justify-content: center; gap: .2rem;
   background: var(--surface2);
@@ -255,7 +299,6 @@ header.visible { display: flex; }
   transition: all .18s cubic-bezier(.4,0,.2,1);
   color: var(--muted);
   white-space: nowrap;
-  /* Fixed compact width on mobile */
   min-height: 38px;
   min-width: 38px;
   width: 38px;
@@ -266,199 +309,37 @@ header.visible { display: flex; }
   overflow: hidden;
   padding: 0;
 }
-
-/* Hide text labels on mobile, show on wider screens */
-.nav-btn-text {
-  display: none;
-}
+.nav-btn-text { display: none; }
 @media (min-width: 400px) {
-  .nav-btn {
-    width: auto;
-    padding: 0 .65rem;
-    gap: .25rem;
-    font-size: var(--fs-sm);
-  }
-  .nav-btn-text {
-    display: inline;
-  }
+  .nav-btn { width: auto; padding: 0 .65rem; gap: .25rem; font-size: var(--fs-sm); }
+  .nav-btn-text { display: inline; }
 }
+.nav-btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,.5) 0%, transparent 100%); border-radius: inherit; pointer-events: none; }
+.nav-btn:active:not(:disabled) { transform: scale(.92); background: var(--blue-light); border-color: var(--blue); color: var(--blue); box-shadow: 0 0 0 3px rgba(26,95,212,.12); }
+@media (hover: hover) { .nav-btn:not(:disabled):hover { background: #fff; border-color: var(--border2); color: var(--text); box-shadow: 0 3px 12px rgba(11,24,41,.1); transform: translateY(-1px); } }
+.nav-btn:disabled { opacity: .28; cursor: not-allowed; pointer-events: none; }
 
-.nav-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,.5) 0%, transparent 100%);
-  border-radius: inherit;
-  pointer-events: none;
-}
+.nav-center { display: flex; align-items: center; gap: .22rem; flex: 1; justify-content: center; min-width: 0; overflow: hidden; }
 
-.nav-btn:active:not(:disabled) {
-  transform: scale(.92);
-  background: var(--blue-light);
-  border-color: var(--blue);
-  color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(26,95,212,.12);
-}
-@media (hover: hover) {
-  .nav-btn:not(:disabled):hover {
-    background: #fff;
-    border-color: var(--border2);
-    color: var(--text);
-    box-shadow: 0 3px 12px rgba(11,24,41,.1);
-    transform: translateY(-1px);
-  }
-}
-.nav-btn:disabled {
-  opacity: .28;
-  cursor: not-allowed;
-  pointer-events: none;
-}
+.nav-step { position: relative; display: flex; align-items: center; height: 38px; border-radius: 10px; border: 1.5px solid var(--border); cursor: pointer; transition: all .25s cubic-bezier(.34,1.2,.64,1); overflow: hidden; -webkit-user-select: none; user-select: none; flex-shrink: 0; background: var(--surface2); width: 38px; justify-content: center; }
+.nav-step::before { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(255,255,255,.55) 0%, transparent 55%); border-radius: inherit; pointer-events: none; z-index: 2; }
+.step-num { font-family: 'JetBrains Mono', monospace; font-size: .8rem; font-weight: 700; color: var(--muted); line-height: 1; transition: all .2s ease; position: relative; z-index: 3; flex-shrink: 0; }
+.step-lbl { font-family: 'Syne', sans-serif; font-size: .68rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; opacity: 0; max-width: 0; overflow: hidden; transition: opacity .2s ease, max-width .25s cubic-bezier(.34,1.2,.64,1), margin .25s ease; position: relative; z-index: 3; color: #fff; margin-left: 0; }
+.step-glow { position: absolute; inset: -3px; border-radius: 12px; opacity: 0; transition: opacity .3s ease; pointer-events: none; z-index: 0; }
 
-/* ── Step Pills center ── */
-.nav-center {
-  display: flex; align-items: center;
-  gap: .22rem;
-  flex: 1;
-  justify-content: center;
-  min-width: 0;
-  overflow: hidden;
-}
+.nav-step.is-active { border-width: 1.5px; box-shadow: 0 4px 18px var(--step-glow, rgba(26,95,212,.3)), inset 0 1px 0 rgba(255,255,255,.25); width: auto; min-width: 38px; padding: 0 .55rem; }
+.nav-step.is-active .step-lbl { opacity: 1; max-width: 60px; margin-left: .28rem; }
+.nav-step.is-active .step-num { color: #fff; }
+.nav-step.is-active .step-glow { opacity: 1; }
+@media (min-width: 400px) { .nav-step.is-active { padding: 0 .7rem; } .nav-step.is-active .step-lbl { max-width: 80px; font-size: .72rem; } }
 
-/* Individual step */
-.nav-step {
-  position: relative;
-  display: flex; align-items: center;
-  height: 38px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border);
-  cursor: pointer;
-  transition: all .25s cubic-bezier(.34,1.2,.64,1);
-  overflow: hidden;
-  -webkit-user-select: none; user-select: none;
-  flex-shrink: 0;
-  background: var(--surface2);
-  /* Fixed icon-only size on small screens */
-  width: 38px;
-  justify-content: center;
-}
+.nav-step.is-done { border-color: transparent; background: var(--step-bg, var(--green-light)); }
+.nav-step.is-done .step-num { color: var(--step-color, var(--green)); font-size: .7rem; }
 
-/* Shine overlay */
-.nav-step::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(160deg, rgba(255,255,255,.55) 0%, transparent 55%);
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Step number */
-.step-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: .8rem;
-  font-weight: 700;
-  color: var(--muted);
-  line-height: 1;
-  transition: all .2s ease;
-  position: relative; z-index: 3;
-  flex-shrink: 0;
-}
-
-/* Step label */
-.step-lbl {
-  font-family: 'Syne', sans-serif;
-  font-size: .68rem;
-  font-weight: 700;
-  letter-spacing: .02em;
-  white-space: nowrap;
-  opacity: 0;
-  max-width: 0;
-  overflow: hidden;
-  transition: opacity .2s ease, max-width .25s cubic-bezier(.34,1.2,.64,1), margin .25s ease;
-  position: relative; z-index: 3;
-  color: #fff;
-  margin-left: 0;
-}
-
-/* Glow ring */
-.step-glow {
-  position: absolute;
-  inset: -3px;
-  border-radius: 12px;
-  opacity: 0;
-  transition: opacity .3s ease;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ── ACTIVE state — expands to show label ── */
-.nav-step.is-active {
-  border-width: 1.5px;
-  box-shadow: 0 4px 18px var(--step-glow, rgba(26,95,212,.3)), inset 0 1px 0 rgba(255,255,255,.25);
-  /* Expand on mobile too but fit within space */
-  width: auto;
-  min-width: 38px;
-  padding: 0 .55rem;
-}
-.nav-step.is-active .step-lbl {
-  opacity: 1;
-  max-width: 60px;
-  margin-left: .28rem;
-}
-.nav-step.is-active .step-num {
-  color: #fff;
-}
-.nav-step.is-active .step-glow {
-  opacity: 1;
-}
-
-/* Wider screens: bigger active pill */
-@media (min-width: 400px) {
-  .nav-step.is-active {
-    padding: 0 .7rem;
-  }
-  .nav-step.is-active .step-lbl {
-    max-width: 80px;
-    font-size: .72rem;
-  }
-}
-
-/* ── DONE state ── */
-.nav-step.is-done {
-  border-color: transparent;
-  background: var(--step-bg, var(--green-light));
-}
-.nav-step.is-done .step-num {
-  color: var(--step-color, var(--green));
-  font-size: .7rem;
-}
-
-/* ── Per-section color theming ── */
-.nav-step[data-step="0"] {
-  --step-color: var(--c0);
-  --step-bg: var(--c0-bg);
-  --step-glow: var(--c0-glow);
-  --step-grad: linear-gradient(135deg, #00a878, #00c896);
-}
-.nav-step[data-step="1"] {
-  --step-color: var(--c1);
-  --step-bg: var(--c1-bg);
-  --step-glow: var(--c1-glow);
-  --step-grad: linear-gradient(135deg, #d93550, #f0607a);
-}
-.nav-step[data-step="2"] {
-  --step-color: var(--c2);
-  --step-bg: var(--c2-bg);
-  --step-glow: var(--c2-glow);
-  --step-grad: linear-gradient(135deg, #1a5fd4, #5498ff);
-}
-.nav-step[data-step="3"] {
-  --step-color: var(--c3);
-  --step-bg: var(--c3-bg);
-  --step-glow: var(--c3-glow);
-  --step-grad: linear-gradient(135deg, #d4790a, #f5a832);
-}
+.nav-step[data-step="0"] { --step-color: var(--c0); --step-bg: var(--c0-bg); --step-glow: var(--c0-glow); --step-grad: linear-gradient(135deg, #00a878, #00c896); }
+.nav-step[data-step="1"] { --step-color: var(--c1); --step-bg: var(--c1-bg); --step-glow: var(--c1-glow); --step-grad: linear-gradient(135deg, #d93550, #f0607a); }
+.nav-step[data-step="2"] { --step-color: var(--c2); --step-bg: var(--c2-bg); --step-glow: var(--c2-glow); --step-grad: linear-gradient(135deg, #1a5fd4, #5498ff); }
+.nav-step[data-step="3"] { --step-color: var(--c3); --step-bg: var(--c3-bg); --step-glow: var(--c3-glow); --step-grad: linear-gradient(135deg, #d4790a, #f5a832); }
 
 .nav-step[data-step="0"].is-active { background: var(--step-grad); border-color: rgba(0,168,120,.4); }
 .nav-step[data-step="1"].is-active { background: var(--step-grad); border-color: rgba(217,53,80,.4); }
@@ -558,11 +439,31 @@ header.visible { display: flex; }
     </span>
   </div>
   <div class="hdr-right">
-    <button class="hbtn hbtn-back" id="hdr-back-btn" onclick="handleBack()" aria-label="Go back">Back</button>
-    <button class="hbtn hbtn-edit" id="hdr-edit-btn" style="display:none" onclick="backToEdit()" aria-label="Edit data">Edit</button>
-    <button class="hbtn hbtn-summary" id="hdr-summary-btn" style="display:none" onclick="openSummaryPage()" aria-label="Generate Financial Summary">Summary</button>
-    <button class="hbtn hbtn-print" onclick="window.print()" aria-label="Print report">Print</button>
-    <button class="hbtn hbtn-reset" onclick="clearAll()" aria-label="Reset all data">Reset</button>
+    <!-- Back button: arrow icon on mobile, "Back" text on wider -->
+    <button class="hbtn hbtn-back" id="hdr-back-btn" onclick="handleBack()" aria-label="Go back">
+      <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L6 8l4 5"/></svg>
+      <span class="hbtn-text">Back</span>
+    </button>
+    <!-- Edit button -->
+    <button class="hbtn hbtn-edit" id="hdr-edit-btn" style="display:none" onclick="backToEdit()" aria-label="Edit data">
+      <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.5 2.5l2 2L5 13H3v-2L11.5 2.5z"/></svg>
+      <span class="hbtn-text">Edit</span>
+    </button>
+    <!-- Summary button -->
+    <button class="hbtn hbtn-summary" id="hdr-summary-btn" style="display:none" onclick="openSummaryPage()" aria-label="Generate Financial Summary">
+      <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5.5h4M5 10.5h3"/></svg>
+      <span class="hbtn-text">Summary</span>
+    </button>
+    <!-- Print button — ALWAYS VISIBLE, icon only on small screens -->
+    <button class="hbtn hbtn-print" onclick="window.print()" aria-label="Print report">
+      <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6V2h8v4M4 12H2V7h12v5h-2M4 10h8v4H4v-4z"/></svg>
+      <span class="hbtn-text">Print</span>
+    </button>
+    <!-- Reset button — icon only on very small, text on wider -->
+    <button class="hbtn hbtn-reset" onclick="clearAll()" aria-label="Reset all data">
+      <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      <span class="hbtn-text">Reset</span>
+    </button>
   </div>
 </header>
 
@@ -774,63 +675,28 @@ header.visible { display: flex; }
   <!-- ═══ SECTION NAV — MOBILE FIXED ═══ -->
   <nav class="section-nav" id="section-nav" aria-label="Section navigation">
     <div class="snav-inner">
-
-      <!-- Prev button: icon-only on mobile, icon+text on wider -->
       <button class="nav-btn" id="btn-prev" onclick="navigate(-1)" aria-label="Previous section">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M8.5 3L5 7l3.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M8.5 3L5 7l3.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span class="nav-btn-text">Prev</span>
       </button>
-
       <div class="nav-center" role="tablist" aria-label="Sections">
-
-        <div class="nav-step" id="step-0" data-step="0"
-          onclick="openSection(0)" role="tab" tabindex="0"
-          aria-label="Section 1: Income" aria-selected="false"
-          onkeydown="if(event.key==='Enter')openSection(0)">
-          <div class="step-glow"></div>
-          <span class="step-num">1</span>
-          <span class="step-lbl">Income</span>
+        <div class="nav-step" id="step-0" data-step="0" onclick="openSection(0)" role="tab" tabindex="0" aria-label="Section 1: Income" aria-selected="false" onkeydown="if(event.key==='Enter')openSection(0)">
+          <div class="step-glow"></div><span class="step-num">1</span><span class="step-lbl">Income</span>
         </div>
-
-        <div class="nav-step" id="step-1" data-step="1"
-          onclick="openSection(1)" role="tab" tabindex="0"
-          aria-label="Section 2: Expenses" aria-selected="false"
-          onkeydown="if(event.key==='Enter')openSection(1)">
-          <div class="step-glow"></div>
-          <span class="step-num">2</span>
-          <span class="step-lbl">Expenses</span>
+        <div class="nav-step" id="step-1" data-step="1" onclick="openSection(1)" role="tab" tabindex="0" aria-label="Section 2: Expenses" aria-selected="false" onkeydown="if(event.key==='Enter')openSection(1)">
+          <div class="step-glow"></div><span class="step-num">2</span><span class="step-lbl">Expenses</span>
         </div>
-
-        <div class="nav-step" id="step-2" data-step="2"
-          onclick="openSection(2)" role="tab" tabindex="0"
-          aria-label="Section 3: Assets" aria-selected="false"
-          onkeydown="if(event.key==='Enter')openSection(2)">
-          <div class="step-glow"></div>
-          <span class="step-num">3</span>
-          <span class="step-lbl">Assets</span>
+        <div class="nav-step" id="step-2" data-step="2" onclick="openSection(2)" role="tab" tabindex="0" aria-label="Section 3: Assets" aria-selected="false" onkeydown="if(event.key==='Enter')openSection(2)">
+          <div class="step-glow"></div><span class="step-num">3</span><span class="step-lbl">Assets</span>
         </div>
-
-        <div class="nav-step" id="step-3" data-step="3"
-          onclick="openSection(3)" role="tab" tabindex="0"
-          aria-label="Section 4: Liabilities" aria-selected="false"
-          onkeydown="if(event.key==='Enter')openSection(3)">
-          <div class="step-glow"></div>
-          <span class="step-num">4</span>
-          <span class="step-lbl">Liabilities</span>
+        <div class="nav-step" id="step-3" data-step="3" onclick="openSection(3)" role="tab" tabindex="0" aria-label="Section 4: Liabilities" aria-selected="false" onkeydown="if(event.key==='Enter')openSection(3)">
+          <div class="step-glow"></div><span class="step-num">4</span><span class="step-lbl">Liabilities</span>
         </div>
-
       </div>
-
-      <!-- Next button: icon-only on mobile, icon+text on wider -->
       <button class="nav-btn" id="btn-next" onclick="navigate(1)" aria-label="Next section">
         <span class="nav-btn-text">Next</span>
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path d="M5.5 3L9 7l-3.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5.5 3L9 7l-3.5 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-
     </div>
   </nav>
 </div>
@@ -979,12 +845,8 @@ function updateStepUI(idx) {
   document.querySelectorAll('.nav-step').forEach((step, i) => {
     step.classList.remove('is-active', 'is-done');
     step.setAttribute('aria-selected', 'false');
-    if (i === idx) {
-      step.classList.add('is-active');
-      step.setAttribute('aria-selected', 'true');
-    } else if (i < idx) {
-      step.classList.add('is-done');
-    }
+    if (i === idx) { step.classList.add('is-active'); step.setAttribute('aria-selected', 'true'); }
+    else if (i < idx) { step.classList.add('is-done'); }
   });
   document.getElementById('btn-prev').disabled = (idx === 0);
   document.getElementById('btn-next').disabled = (idx === 3);
