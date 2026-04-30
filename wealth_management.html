@@ -154,7 +154,6 @@ body {
 header {
   display: none;
   padding: .5rem .75rem;
-  /* Safe area sides */
   padding-left: max(.75rem, env(safe-area-inset-left, 0px));
   padding-right: max(.75rem, env(safe-area-inset-right, 0px));
   align-items: center;
@@ -180,7 +179,6 @@ header.visible { display: flex; }
   overflow: hidden;
 }
 
-/* ── Right side: always row, never overflow ── */
 .hdr-right {
   display: flex;
   align-items: center;
@@ -211,7 +209,6 @@ header.visible { display: flex; }
   font-size: 10px; font-weight: 600; color: var(--green);
   white-space: nowrap; flex-shrink: 0;
 }
-/* Hide text label on very small screens to save space */
 .pill-text { display: none; }
 @media (min-width: 420px) { .pill-text { display: inline; } }
 .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; flex-shrink: 0; }
@@ -242,19 +239,41 @@ header.visible { display: flex; }
 .hbtn.hbtn-print { display: none; }
 @media (min-width: 560px) { .hbtn.hbtn-print { display: inline-flex; } }
 
-/* ── RESET BUTTON — always visible, clear label ── */
+/* ── BACK BUTTON ── */
+.hbtn-back {
+  background: transparent;
+  border-color: var(--border2);
+  color: var(--muted);
+}
+.hbtn-back:active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+
+/* ── SUMMARY BUTTON ── */
+.hbtn-summary {
+  background: linear-gradient(135deg, var(--blue), #1e7cff);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: .03em;
+  box-shadow: 0 2px 10px rgba(26,95,212,.3);
+}
+.hbtn-summary:active { background: linear-gradient(135deg, #1450b0, #1a6de0); box-shadow: none; color: #fff; }
+@media (hover: hover) { .hbtn-summary:hover { box-shadow: 0 4px 16px rgba(26,95,212,.45); } }
+
+/* ── EDIT BUTTON ── */
+.hbtn-edit {
+  background: transparent;
+  border-color: var(--border2);
+  color: var(--muted);
+}
+
+/* ── RESET BUTTON ── */
 .hbtn-reset {
   background: var(--red-light);
   border-color: var(--red-border);
   color: var(--red);
-  font-size: var(--fs-xs);
   font-weight: 700;
-  gap: 4px;
 }
 .hbtn-reset:active { background: rgba(217,53,80,.18); border-color: var(--red); color: var(--red); }
-/* Icon is always shown; text label shown when space allows */
-.reset-label { display: none; }
-@media (min-width: 380px) { .reset-label { display: inline; } }
 
 /* ─── DASHBOARD ─── */
 #dashboard {
@@ -553,23 +572,28 @@ header.visible { display: flex; }
 
   <div class="hdr-right">
     <!-- Back button -->
-    <button class="hbtn" id="hdr-back-btn" onclick="handleBack()" aria-label="Go back">
-      ← <span class="reset-label">Back</span>
+    <button class="hbtn hbtn-back" id="hdr-back-btn" onclick="handleBack()" aria-label="Go back">
+      Back
     </button>
 
     <!-- Edit button (summary page only) -->
-    <button class="hbtn" id="hdr-edit-btn" style="display:none" onclick="backToEdit()" aria-label="Edit data">
-      ✏️ <span class="reset-label">Edit</span>
+    <button class="hbtn hbtn-edit" id="hdr-edit-btn" style="display:none" onclick="backToEdit()" aria-label="Edit data">
+      Edit
+    </button>
+
+    <!-- Summary button (section view only) -->
+    <button class="hbtn hbtn-summary" id="hdr-summary-btn" style="display:none" onclick="openSummaryPage()" aria-label="Generate Financial Summary">
+      Summary
     </button>
 
     <!-- Print (desktop only) -->
     <button class="hbtn hbtn-print" onclick="window.print()" aria-label="Print report">
-      🖨 Print
+      Print
     </button>
 
-    <!-- RESET — always visible, clearly labelled -->
+    <!-- RESET -->
     <button class="hbtn hbtn-reset" onclick="clearAll()" aria-label="Reset all data">
-      🗑 <span class="reset-label">Reset</span>
+      Reset
     </button>
   </div>
 </header>
@@ -923,9 +947,29 @@ function showView(name) {
   document.getElementById('summary-page').classList.toggle('visible',name==='summary');
   document.getElementById('main-header').classList.toggle('visible',name!=='dashboard');
   document.getElementById('section-nav').classList.toggle('show',name==='section');
-  document.getElementById('hdr-edit-btn').style.display=(name==='summary')?'inline-flex':'none';
+
+  // Button visibility per view
+  const backBtn = document.getElementById('hdr-back-btn');
+  const editBtn = document.getElementById('hdr-edit-btn');
+  const summaryBtn = document.getElementById('hdr-summary-btn');
+
+  if (name === 'section') {
+    backBtn.style.display = 'inline-flex';
+    editBtn.style.display = 'none';
+    summaryBtn.style.display = 'inline-flex';
+  } else if (name === 'summary') {
+    backBtn.style.display = 'none';
+    editBtn.style.display = 'inline-flex';
+    summaryBtn.style.display = 'none';
+  } else {
+    backBtn.style.display = 'none';
+    editBtn.style.display = 'none';
+    summaryBtn.style.display = 'none';
+  }
+
   document.getElementById('dashboard').setAttribute('aria-hidden',name!=='dashboard'?'true':'false');
 }
+
 function openSection(idx) {
   currentSection=idx; showView('section');
   document.querySelectorAll('.panel').forEach((p,i)=>p.classList.toggle('visible',i===idx));
