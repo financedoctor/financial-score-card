@@ -72,89 +72,134 @@ body { font-family: 'Syne', sans-serif; background: var(--bg); color: var(--text
 .btn-trust { background: linear-gradient(135deg, var(--green), #008a62); color: #fff; font-weight: 700; letter-spacing: .04em; border: none; border-radius: 14px; padding: 0 2rem; cursor: pointer; width: 100%; margin-top: .7rem; font-size: 1rem; font-family: 'Syne', sans-serif; transition: var(--tr); min-height: var(--touch-min); display: flex; align-items: center; justify-content: center; }
 .btn-trust:active { transform: scale(.97); opacity: .9; }
 
-/* ─── HEADER ─── */
+/* ═══════════════════════════════════════════
+   ─── HEADER — FULLY REBUILT FOR MOBILE ───
+   ═══════════════════════════════════════════ */
 header {
   display: none;
-  padding: 0 .5rem;
-  padding-left: max(.5rem, env(safe-area-inset-left, 0px));
-  padding-right: max(.5rem, env(safe-area-inset-right, 0px));
+  height: 52px;
+  padding: 0 10px;
+  padding-left: max(10px, env(safe-area-inset-left, 0px));
+  padding-right: max(10px, env(safe-area-inset-right, 0px));
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,.97);
+  background: rgba(255,255,255,.98);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
   position: sticky;
   top: env(safe-area-inset-top, 0px);
   z-index: 100;
-  gap: .3rem;
-  min-height: 52px;
+  gap: 6px;
 }
 header.visible { display: flex; }
 
-.hdr-left { display: flex; align-items: center; gap: .3rem; flex-shrink: 0; }
-.hdr-right { display: flex; align-items: center; gap: .25rem; flex: 1; justify-content: flex-end; flex-wrap: nowrap; min-width: 0; overflow: hidden; }
-
-.fd-logo-sm { display: inline-flex; flex-direction: column; align-items: center; background: var(--fd-sky); border-radius: 8px; padding: .22rem .5rem .18rem; line-height: 1; box-shadow: 0 2px 8px rgba(91,200,232,.3); cursor: pointer; flex-shrink: 0; min-height: 36px; }
-.fd-logo-sm .fd-main-sm { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .6rem; color: #fff; letter-spacing: .06em; text-transform: uppercase; line-height: 1.15; }
-.fd-logo-sm .fd-estd-sm { font-size: .38rem; color: rgba(255,255,255,.8); letter-spacing: .07em; margin-top: .08rem; }
-
-.offline-pill { display: flex; align-items: center; gap: .3rem; background: var(--green-light); border: 1px solid var(--green-border); border-radius: 20px; padding: .22rem .45rem; font-size: 10px; font-weight: 600; color: var(--green); white-space: nowrap; flex-shrink: 0; }
-.pill-text { display: none; }
-@media (min-width: 480px) { .pill-text { display: inline; } }
-.pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; flex-shrink: 0; }
-@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
-
-/* ─── HEADER BUTTONS — MOBILE FIRST ─── */
-.hbtn {
-  background: transparent;
-  border: 1px solid var(--border2);
-  color: var(--muted);
-  font-family: 'Syne', sans-serif;
-  font-size: var(--fs-xs);
-  font-weight: 600;
+/* Logo — compact on mobile */
+.fd-logo-sm {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--fd-sky);
   border-radius: 8px;
+  padding: 4px 8px;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(91,200,232,.3);
   cursor: pointer;
-  transition: var(--tr);
+  flex-shrink: 0;
+  height: 36px;
+  min-width: 54px;
+}
+.fd-logo-sm .fd-main-sm {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 8px;
+  color: #fff;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+}
+.fd-logo-sm .fd-estd-sm {
+  font-size: 6px;
+  color: rgba(255,255,255,.8);
+  letter-spacing: .06em;
+  margin-top: 2px;
+  text-align: center;
+}
+
+/* Right side button group */
+.hdr-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex: 1;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+/* Base button style — icon+text pill */
+.hbtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 4px;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--tr);
   white-space: nowrap;
   flex-shrink: 0;
-  /* Mobile: icon-only squares */
-  min-height: 36px;
-  min-width: 36px;
-  padding: 0;
+  height: 34px;
+  padding: 0 10px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface2);
+  color: var(--muted);
+  letter-spacing: .02em;
+  -webkit-user-select: none;
+  user-select: none;
 }
-.hbtn:active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+.hbtn:active { opacity: .75; transform: scale(.94); }
+.btn-icon { width: 13px; height: 13px; flex-shrink: 0; }
 
-/* Show text labels on wider screens */
-@media (min-width: 400px) {
-  .hbtn { padding: 0 .55rem; min-width: auto; font-size: var(--fs-xs); }
-}
-@media (min-width: 500px) {
-  .hbtn { padding: 0 .7rem; font-size: var(--fs-sm); }
-}
-
-/* Hide button text on very small screens, show icon only */
-.hbtn-text { display: none; }
-@media (min-width: 360px) { .hbtn-text { display: inline; } }
-
-/* Print button — always visible now */
-.hbtn-print { display: inline-flex !important; }
-
-.hbtn-back { background: transparent; border-color: var(--border2); color: var(--muted); }
+/* Individual button variants */
+.hbtn-back { background: var(--surface2); border-color: var(--border2); color: var(--muted); }
 .hbtn-back:active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
-.hbtn-summary { background: linear-gradient(135deg, var(--blue), #1e7cff); border-color: transparent; color: #fff; font-weight: 700; letter-spacing: .03em; box-shadow: 0 2px 10px rgba(26,95,212,.3); }
-.hbtn-summary:active { background: linear-gradient(135deg, #1450b0, #1a6de0); box-shadow: none; color: #fff; }
-@media (hover: hover) { .hbtn-summary:hover { box-shadow: 0 4px 16px rgba(26,95,212,.45); } }
-.hbtn-edit { background: transparent; border-color: var(--border2); color: var(--muted); }
-.hbtn-reset { background: var(--red-light); border-color: var(--red-border); color: var(--red); font-weight: 700; }
-.hbtn-reset:active { background: rgba(217,53,80,.18); border-color: var(--red); color: var(--red); }
 
-/* Print & Reset icon SVGs */
-.btn-icon { width: 14px; height: 14px; flex-shrink: 0; }
+.hbtn-edit { background: var(--surface2); border-color: var(--border2); color: var(--muted); }
+.hbtn-edit:active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+
+.hbtn-summary {
+  background: linear-gradient(135deg, var(--blue), #1e7cff);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(26,95,212,.35);
+  padding: 0 12px;
+}
+.hbtn-summary:active { box-shadow: none; opacity: .85; }
+
+.hbtn-print { background: var(--surface2); border-color: var(--border2); color: var(--muted); }
+.hbtn-print:active { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+
+.hbtn-reset {
+  background: var(--red-light);
+  border-color: var(--red-border);
+  color: var(--red);
+  font-weight: 700;
+}
+.hbtn-reset:active { background: rgba(217,53,80,.18); }
+
+/* On very small screens — show only icon for print & reset */
+.hbtn-label { display: inline; }
+@media (max-width: 380px) {
+  .hbtn { height: 32px; padding: 0 8px; font-size: 11px; gap: 3px; }
+  .hbtn-print .hbtn-label,
+  .hbtn-reset .hbtn-label { display: none; }
+  .hbtn-print, .hbtn-reset { padding: 0 8px; min-width: 32px; }
+}
 
 /* ─── DASHBOARD ─── */
 #dashboard { width: 100%; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: max(2rem, calc(env(safe-area-inset-top, 0px) + 1.5rem)) 1rem calc(2rem + env(safe-area-inset-bottom, 0px)); gap: 1.5rem; }
@@ -393,7 +438,7 @@ header.visible { display: flex; }
 
 /* ─── PRINT ─── */
 @media print {
-  #trust-modal, .hbtn, .offline-pill, .sc-cta, .gen-wrap, .section-nav, .scroll-hint { display: none !important; }
+  #trust-modal, .hbtn, .sc-cta, .gen-wrap, .section-nav, .scroll-hint { display: none !important; }
   #dashboard { display: flex !important; min-height: auto !important; padding: 1rem !important; }
   #section-view { display: block !important; padding-bottom: 0 !important; }
   #summary-page { display: block !important; }
@@ -426,43 +471,39 @@ header.visible { display: flex; }
   </div>
 </div>
 
-<!-- HEADER -->
+<!-- HEADER — clean, compact, mobile-first -->
 <header id="main-header" role="banner">
-  <div class="hdr-left">
-    <div class="fd-logo-sm" onclick="backToDash()" role="button" tabindex="0" aria-label="Finance Doctor home" onkeydown="if(event.key==='Enter')backToDash()">
-      <span class="fd-main-sm">FINANCE<br/>DOCTOR</span>
-      <span class="fd-estd-sm">Estd. 2002</span>
-    </div>
-    <span class="offline-pill" aria-label="Offline — local data only">
-      <span class="pulse" aria-hidden="true"></span>
-      <span class="pill-text">Offline · local only</span>
-    </span>
+  <!-- Logo -->
+  <div class="fd-logo-sm" onclick="backToDash()" role="button" tabindex="0" aria-label="Finance Doctor home" onkeydown="if(event.key==='Enter')backToDash()">
+    <span class="fd-main-sm">FINANCE<br/>DOCTOR</span>
+    <span class="fd-estd-sm">Estd. 2002</span>
   </div>
+
+  <!-- Right actions -->
   <div class="hdr-right">
-    <!-- Back button: arrow icon on mobile, "Back" text on wider -->
     <button class="hbtn hbtn-back" id="hdr-back-btn" onclick="handleBack()" aria-label="Go back">
       <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3L6 8l4 5"/></svg>
-      <span class="hbtn-text">Back</span>
+      <span class="hbtn-label">Back</span>
     </button>
-    <!-- Edit button -->
+
     <button class="hbtn hbtn-edit" id="hdr-edit-btn" style="display:none" onclick="backToEdit()" aria-label="Edit data">
       <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.5 2.5l2 2L5 13H3v-2L11.5 2.5z"/></svg>
-      <span class="hbtn-text">Edit</span>
+      <span class="hbtn-label">Edit</span>
     </button>
-    <!-- Summary button -->
+
     <button class="hbtn hbtn-summary" id="hdr-summary-btn" style="display:none" onclick="openSummaryPage()" aria-label="Generate Financial Summary">
       <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 8h6M5 5.5h4M5 10.5h3"/></svg>
-      <span class="hbtn-text">Summary</span>
+      <span class="hbtn-label">Summary</span>
     </button>
-    <!-- Print button — ALWAYS VISIBLE, icon only on small screens -->
+
     <button class="hbtn hbtn-print" onclick="window.print()" aria-label="Print report">
       <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6V2h8v4M4 12H2V7h12v5h-2M4 10h8v4H4v-4z"/></svg>
-      <span class="hbtn-text">Print</span>
+      <span class="hbtn-label">Print</span>
     </button>
-    <!-- Reset button — icon only on very small, text on wider -->
+
     <button class="hbtn hbtn-reset" onclick="clearAll()" aria-label="Reset all data">
       <svg class="btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13"/></svg>
-      <span class="hbtn-text">Reset</span>
+      <span class="hbtn-label">Reset</span>
     </button>
   </div>
 </header>
